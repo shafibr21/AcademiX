@@ -7,6 +7,7 @@ import Faculty from "./pages/Faculty";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Login from "./pages/Login";
+import FacultyDetail from "./components/FacultyDetail";
 
 const App = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/faculty/:id" element={<FacultyDetail />} />
       </Routes>
     </div>
   );
