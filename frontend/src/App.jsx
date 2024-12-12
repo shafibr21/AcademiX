@@ -9,6 +9,7 @@ import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import FacultyDetail from "./components/FacultyDetail";
 import "react-toastify/dist/ReactToastify.css";
+import SearchBar from "./components/SearchBar";
 
 const App = () => {
   const location = useLocation();

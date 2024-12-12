@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 import App from "./App.jsx";
+import SearchContextProvider from "./context/SearchContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
-      <App />
+      <SearchContextProvider>
+        <App />
+      </SearchContextProvider>
     </AuthProvider>
   </BrowserRouter>
 );

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { SearchContext } from "../context/SearchContext";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ const Navbar = () => {
     // Redirect to the login page
     navigate("/login");
   };
+
+  const { setShowSearch, showSearch } = useContext(SearchContext);
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
@@ -76,6 +80,7 @@ const Navbar = () => {
       {/* Right side div */}
       <div className="flex items-center gap-6 mr-10">
         <img
+          onClick={() => setShowSearch(!showSearch)}
           src={assets.search_icon}
           className="w-5 cursor-pointer"
           alt="Search"

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FacultyCard from "../components/FacultyCard";
 import { faculty } from "../assets/assets";
+import { SearchContext } from "../context/SearchContext";
+import SearchBar from "../components/SearchBar";
 
 const Faculty = () => {
   const [facultyData, setFacultyData] = useState([]);
+
+  const { showSearch, setShowSearch } = useContext(SearchContext);
 
   useEffect(() => {
     setFacultyData(faculty);
@@ -16,6 +20,7 @@ const Faculty = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {showSearch && <SearchBar />}
       <h1 className="text-2xl font-bold text-center text-blue-500 mb-6">
         Faculty Directory
       </h1>
