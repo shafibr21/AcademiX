@@ -79,12 +79,15 @@ const Navbar = () => {
 
       {/* Right side div */}
       <div className="flex items-center gap-6 mr-10">
-        <img
-          onClick={() => setShowSearch(!showSearch)}
-          src={assets.search_icon}
-          className="w-5 cursor-pointer"
-          alt="Search"
-        />
+        {(location.pathname === "/faculty" ||
+          location.pathname === "/projects") && (
+          <img
+            onClick={() => setShowSearch(!showSearch)}
+            src={assets.search_icon}
+            className="w-5 cursor-pointer"
+            alt="Search"
+          />
+        )}
 
         {authToken ? (
           <div className="group relative">

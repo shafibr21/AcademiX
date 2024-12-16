@@ -25,7 +25,7 @@ const Home = () => {
       <FAQ />
 
       {/* Cookie Consent Popup */}
-      {showCookiesPopup && (
+      {/* {showCookiesPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-auto">
             <p className="text-base text-gray-800 mb-6 leading-relaxed">
@@ -50,7 +50,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
