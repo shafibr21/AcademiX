@@ -98,6 +98,7 @@ const registerUser = async (req, res) => {
 // Route to get user info
 const getUserinfo = async (req, res) => {
   try {
+    const decoded = req.decoded;
     // Fetch the user details from the database
     const user = await User.findById(decoded.id).select(
       "name email role department bio verified createdAt updatedAt"

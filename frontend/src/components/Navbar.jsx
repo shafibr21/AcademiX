@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { SearchContext } from "../context/SearchContext";
@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar";
 const Navbar = () => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("authToken");
+  const [dropdown, setDropdown] = useState(false);
 
   const handleLogout = () => {
     // Remove the authentication token
@@ -92,11 +93,16 @@ const Navbar = () => {
         {authToken ? (
           <div className="group relative">
             <img
+              onClick={() => setDropdown(!dropdown)}
               src={assets.profile_icon}
               className="w-5 cursor-pointer"
               alt="Profile"
             />
-            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+            <div
+              className={`absolute dropdown-menu right-0 pt-4 z-10 ${
+                dropdown ? "block" : "hidden"
+              }`}
+            >
               <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
                 <Link to="/profile" className="cursor-pointer hover:text-black">
                   <p>My Profile</p>

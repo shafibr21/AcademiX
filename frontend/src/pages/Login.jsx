@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginForm = () => {
+  const { fetchUserData } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login details:", { email, password });
-    localStorage.setItem("authToken", "myAuthToken  ");
+
+    try {
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const response = await fetch(`${apiDomain}/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message || "Sign-in failed");
+      }
+      localStorage.setItem("authToken", data.token);
+      fetchUserData(data.token);
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
     navigate("/");
   };
 
