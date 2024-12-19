@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
@@ -85,10 +85,4 @@ const Student = mongoose.model("Student", StudentSchema);
 const Publication = mongoose.model("Publication", PublicationSchema);
 const Contribution = mongoose.model("Contribution", ContributionSchema);
 
-module.exports = {
-  User,
-  Faculty,
-  Student,
-  Publication,
-  Contribution,
-};
+export { User, Faculty, Student, Publication, Contribution };

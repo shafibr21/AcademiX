@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import validator from "validator";
 import { User } from "../model/models.js";
 
 const createToken = (id, role) => {
@@ -38,7 +40,7 @@ const loginUser = async (req, res) => {
 // Route for user registration
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if the user already exists
     const exists = await User.findOne({ email });
@@ -73,6 +75,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role,
     });
 
     // Save the user to the database
@@ -93,42 +96,38 @@ const registerUser = async (req, res) => {
 };
 
 // Route to get user info
-async function getUser(req, res) {
+const getUserinfo = async (req, res) => {
   try {
-    const userId = req.userData.id;
-
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const user = await DB.User.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        department: true,
-        role: true,
-        bio: true,
-        verified: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    // Fetch the user details from the database
+    const user = await User.findById(decoded.id).select(
+      "name email role department bio verified createdAt updatedAt"
+    );
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    return res.status(200).json({
+    return res.json({
       success: true,
-      data: user,
+      user,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-}
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token. Access denied",
+      });
+    }
 
-export { loginUser, registerUser };
+    return res.status(500).json({
+      success: false,
+      message: "Server error, please try again",
+      error: error.message,
+    });
+  }
+};
+
+export { loginUser, registerUser, getUserinfo };
