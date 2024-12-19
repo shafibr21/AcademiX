@@ -16,32 +16,31 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const fetchUserData = async (authToken) => {
-    // try {
-    //   // get user info
-    //   const apiDomain = import.meta.env.VITE_API_DOMAIN;
-    //   const response = await fetch(`${apiDomain}/api/user/getuser`, {
-    //     method: "GET",
-    //     headers: {
-    //       Authorization: `Bearer ${authToken}`,
-    //     },
-    //   });
+    try {
+      // get user info
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const response = await fetch(`${apiDomain}/api/user/getuser`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-    //   if (response.ok) {
-    //     const res = await response.json();
-    //     setUser(res.data);
-    //   } else {
-    //     setUser(null);
-    //     localStorage.removeItem("authToken"); // If fetching user fails, remove token
-    //   }
-    // } catch (error) {
-    //   console.error("Error fetching user data:", error);
-    //   setUser(null);
-    //   localStorage.removeItem("authToken"); // On error, remove token
-    // } finally {
-    //   setLoading(false); // Stop loading once data is fetched
-    // }
+      if (response.ok) {
+        const res = await response.json();
+        setUser(res.data);
+      } else {
+        setUser(null);
+        localStorage.removeItem("authToken"); // If fetching user fails, remove token
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setUser(null);
+      localStorage.removeItem("authToken"); // On error, remove token
+    } finally {
+      setLoading(false); // Stop loading once data is fetched
+    }
     setLoading(false); // For now, stop loading and set user to null
-    setUser({ name: "John Doe", email: "johndoe@gmail.com" });
   };
 
   return (
