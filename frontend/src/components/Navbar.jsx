@@ -3,7 +3,17 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { SearchContext } from "../context/SearchContext";
 import SearchBar from "./SearchBar";
-
+const SubLink = ({ link, handleClick, desc }) => {
+  return (
+    <Link
+      to={link}
+      onClick={handleClick}
+      className="cursor-pointer hover:text-black"
+    >
+      <p>{desc}</p>
+    </Link>
+  );
+};
 const Navbar = () => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("authToken");
@@ -16,7 +26,9 @@ const Navbar = () => {
     // Redirect to the login page
     navigate("/login");
   };
-
+  const handlesubLink = () => {
+    setDropdown(false);
+  };
   const { setShowSearch, showSearch } = useContext(SearchContext);
 
   return (
@@ -104,18 +116,21 @@ const Navbar = () => {
               }`}
             >
               <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-                <Link to="/profile" className="cursor-pointer hover:text-black">
-                  <p>My Profile</p>
-                </Link>
-                <Link to="/thesis" className="cursor-pointer hover:text-black">
-                  <p>Thesis</p>
-                </Link>
-                <Link
-                  to="/progress"
-                  className="cursor-pointer hover:text-black"
-                >
-                  <p>Progress</p>
-                </Link>
+                <SubLink
+                  link="/profile"
+                  handleClick={handlesubLink}
+                  desc="Profile"
+                />
+                <SubLink
+                  link="/thesis"
+                  handleClick={handlesubLink}
+                  desc="Thesis"
+                />
+                <SubLink
+                  link="/projects"
+                  handleClick={handlesubLink}
+                  desc="Projects"
+                />
                 <p
                   onClick={handleLogout}
                   className="cursor-pointer hover:text-black"

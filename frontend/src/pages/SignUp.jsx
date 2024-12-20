@@ -19,7 +19,7 @@ const SignUp = () => {
       .post(`${apiDomain}/api/user/signup`, values)
       .then((response) => {
         console.log("User signed up successfully:", response.data);
-        // navigate("/"); // Redirect to home page
+        navigate("/"); // Redirect to home page
       })
       .catch((error) => {
         console.error("There was an error signing up:", error);

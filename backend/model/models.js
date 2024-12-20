@@ -79,10 +79,18 @@ const ContributionSchema = new Schema({
 });
 
 // Export Models
-const User = mongoose.model("User", UserSchema);
-const Faculty = mongoose.model("Faculty", FacultySchema);
-const Student = mongoose.model("Student", StudentSchema);
-const Publication = mongoose.model("Publication", PublicationSchema);
-const Contribution = mongoose.model("Contribution", ContributionSchema);
+const User = mongoose.model("User", UserSchema, "user");
+const Faculty = mongoose.model("Faculty", FacultySchema, "faculty");
+const Student = mongoose.model("Student", StudentSchema, "student");
+const Publication = mongoose.model(
+  "Publication",
+  PublicationSchema,
+  "publication"
+);
+const Contribution = mongoose.model(
+  "Contribution",
+  ContributionSchema,
+  "contribution"
+);
 
 export { User, Faculty, Student, Publication, Contribution };

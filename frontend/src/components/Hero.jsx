@@ -12,7 +12,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-blue-800 via-blue-600 to-blue-500 opacity-75"></div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center text-white">
+        <div className="relative flex flex-col items-center justify-center min-h-screen px-6 text-center text-white">
           {/* Banner Text with Enhanced Shadow */}
           <h1
             className="text-6xl font-extrabold mb-6"

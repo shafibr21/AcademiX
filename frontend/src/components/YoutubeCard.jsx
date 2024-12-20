@@ -19,7 +19,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/dkKpxJ5_4Hk" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="AI in Education"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -35,7 +35,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/Z1aYVYt5Grg" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="Blockchain for Academic Integrity"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -51,7 +51,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/2u8EwL75y-s" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="Cloud Computing in Universities"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -67,7 +67,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/n6N2rXuyjbg" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="Data Privacy in E-Learning"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -83,7 +83,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/75ak07xa8P8" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="Smart Campus Solutions"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -99,7 +99,7 @@ const YoutubeCard = () => {
               <iframe
                 width="100%"
                 height="315"
-                src="https://www.youtube.com/embed/5gDNeKwUv5s" // Replace with relevant video URL
+                src="" // Replace with relevant video URL
                 title="AR/VR for Interactive Learning"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

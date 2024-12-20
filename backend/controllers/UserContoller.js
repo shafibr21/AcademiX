@@ -112,4 +112,36 @@ const getUserinfo = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, getUserinfo };
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.bio = req.body.bio || user.bio;
+    if (req.file) {
+      user.image = `/uploads/${req.file.filename}`;
+    }
+
+    const updatedUser = await user.save();
+    res.json({ user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export { loginUser, registerUser, getUserinfo, getUserProfile };
