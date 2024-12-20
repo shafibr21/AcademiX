@@ -10,10 +10,12 @@ import Login from "./pages/Login";
 import FacultyDetail from "./components/FacultyDetail";
 import "react-toastify/dist/ReactToastify.css";
 import SearchBar from "./components/SearchBar";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   const location = useLocation();
-  const showNavbar = location.pathname !== "/login";
+  const showNavbar =
+    location.pathname !== "/login" && location.pathname !== "/signup";
   return (
     <div>
       <ToastContainer />
@@ -25,6 +27,7 @@ const App = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/login" element={<Login />} />
         <Route path="/faculty/:id" element={<FacultyDetail />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>
   );
