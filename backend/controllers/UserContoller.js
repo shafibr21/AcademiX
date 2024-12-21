@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
+import { v2 as cloudinary } from "cloudinary";
 import { User, Faculty, Student } from "../model/models.js";
 
 const createToken = (id, role) => {
@@ -172,10 +173,38 @@ const getUserProfile = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const updateUserImage = async (req, res) => {
+  const userId = req.decoded.id;
+  console.log(req.file, userId);
 
+  try {
+    // Fetch the user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (req.file) {
+      // Upload the file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "user_profiles", // Optional: Organize uploads into a folder
+        resource_type: "image",
+      });
+
+      // Save the secure URL of the uploaded image
+      user.image = result.secure_url;
+    }
+    await user.save();
+    res.status(200).json({ message: "User image updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating user details" });
+  }
+};
 const updateUserDetails = async (req, res) => {
+  const userId = req.decoded.id;
   const {
-    userId,
     bio,
     image,
     researchInterests,
@@ -193,17 +222,6 @@ const updateUserDetails = async (req, res) => {
 
     // Update common user fields
     if (bio) user.bio = bio;
-    // Upload image if provided
-    if (req.file) {
-      // Upload the file to Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "user_profiles", // Optional: Organize uploads into a folder
-        resource_type: "image",
-      });
-
-      // Save the secure URL of the uploaded image
-      user.image = result.secure_url;
-    }
 
     // Perform role-specific updates
     if (user.role === "STUDENT") {
@@ -243,4 +261,5 @@ export {
   getUserinfo,
   getUserProfile,
   updateUserDetails,
+  updateUserImage,
 };

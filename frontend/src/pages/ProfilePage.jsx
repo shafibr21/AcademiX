@@ -40,7 +40,7 @@ const ProfilePage = () => {
       // Send userId along with the bio for the update request
       const response = await axios.put(
         `${apiDomain}/api/user/update`,
-        { userId: user._id, bio: newBio },
+        { bio: newBio },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,

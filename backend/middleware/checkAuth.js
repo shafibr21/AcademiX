@@ -46,8 +46,11 @@ const protect = async (req, res, next) => {
 };
 
 const validateUpdateRequest = (req, res, next) => {
+  if (!req.decoded) {
+    return res.status(400).json({ error: "Request body is required" });
+  }
+
   const {
-    userId,
     bio,
     researchInterests,
     availability,
@@ -56,8 +59,8 @@ const validateUpdateRequest = (req, res, next) => {
     image,
   } = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ error: "User ID is required" });
+  if (!req.decoded.id) {
+    return res.status(400).json({ error: "Unauthorized" });
   }
 
   if (
@@ -72,7 +75,7 @@ const validateUpdateRequest = (req, res, next) => {
       .status(400)
       .json({ error: "At least one field to update is required" });
   }
-
+  console.log("Request body is valid");
   next();
 };
 export { checkAuth, protect, validateUpdateRequest };

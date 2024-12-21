@@ -11,6 +11,7 @@ import {
   getUserinfo,
   getUserProfile,
   updateUserDetails,
+  updateUserImage,
 } from "../controllers/UserContoller.js";
 import upload from "../middleware/upload.js";
 
@@ -20,12 +21,12 @@ userRouter.post("/login", loginUser);
 userRouter.get("/getuser", checkAuth, getUserinfo);
 userRouter.post("/signup", registerUser);
 userRouter.get("/profile", protect, getUserProfile);
-userRouter.put("/update", validateUpdateRequest, updateUserDetails);
+userRouter.put("/update", checkAuth, validateUpdateRequest, updateUserDetails);
 userRouter.put(
   "/imgupload",
-  protect,
+  checkAuth,
   upload.single("image"),
-  updateUserDetails
+  updateUserImage
 );
 
 export default userRouter;
