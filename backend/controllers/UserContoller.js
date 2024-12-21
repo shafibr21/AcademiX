@@ -173,9 +173,9 @@ const getUserProfile = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 const updateUserImage = async (req, res) => {
   const userId = req.decoded.id;
-  console.log(req.file, userId);
 
   try {
     // Fetch the user by ID
@@ -202,16 +202,11 @@ const updateUserImage = async (req, res) => {
       .json({ error: "An error occurred while updating user details" });
   }
 };
+
 const updateUserDetails = async (req, res) => {
   const userId = req.decoded.id;
-  const {
-    bio,
-    image,
-    researchInterests,
-    availability,
-    contributions,
-    publications,
-  } = req.body;
+  const { bio, researchInterests, availability, contributions, publications } =
+    req.body;
 
   try {
     // Fetch the user by ID
