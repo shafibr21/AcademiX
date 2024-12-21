@@ -45,4 +45,34 @@ const protect = async (req, res, next) => {
   }
 };
 
-export { checkAuth, protect };
+const validateUpdateRequest = (req, res, next) => {
+  const {
+    userId,
+    bio,
+    researchInterests,
+    availability,
+    contributions,
+    publications,
+    image,
+  } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  if (
+    !bio &&
+    !image &&
+    !researchInterests &&
+    !availability &&
+    !contributions &&
+    !publications
+  ) {
+    return res
+      .status(400)
+      .json({ error: "At least one field to update is required" });
+  }
+
+  next();
+};
+export { checkAuth, protect, validateUpdateRequest };

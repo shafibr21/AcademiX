@@ -1,10 +1,59 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
-import { User } from "../model/models.js";
+import { User, Faculty, Student } from "../model/models.js";
 
 const createToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "3d" }); // Optional expiry time
+};
+//update information of user(studnet & faculty)
+const handleStudentUpdate = async (
+  userId,
+  researchInterests,
+  contributions
+) => {
+  let student = await Student.findOne({ userId });
+
+  if (!student) {
+    // Create a new student entry if it doesn't exist
+    student = new Student({
+      userId,
+      researchInterests,
+      contributions: contributions || [],
+    });
+  } else {
+    // Update existing student details
+    if (researchInterests) student.researchInterests = researchInterests;
+    if (contributions) student.contributions = contributions;
+  }
+
+  await student.save();
+};
+
+const handleFacultyUpdate = async (
+  userId,
+  researchInterests,
+  availability,
+  publications
+) => {
+  let faculty = await Faculty.findOne({ userId });
+
+  if (!faculty) {
+    // Create a new faculty entry if it doesn't exist
+    faculty = new Faculty({
+      userId,
+      researchInterests,
+      availability,
+      publications: publications || [],
+    });
+  } else {
+    // Update existing faculty details
+    if (researchInterests) faculty.researchInterests = researchInterests;
+    if (availability) faculty.availability = availability;
+    if (publications) faculty.publications = publications;
+  }
+
+  await faculty.save();
 };
 
 // Route for user login
@@ -124,24 +173,74 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-export const updateUserProfile = async (req, res) => {
+const updateUserDetails = async (req, res) => {
+  const {
+    userId,
+    bio,
+    image,
+    researchInterests,
+    availability,
+    contributions,
+    publications,
+  } = req.body;
+
   try {
-    const user = await User.findById(req.user.id);
-
+    // Fetch the user by ID
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
-    user.bio = req.body.bio || user.bio;
+    // Update common user fields
+    if (bio) user.bio = bio;
+    // Upload image if provided
     if (req.file) {
-      user.image = `/uploads/${req.file.filename}`;
+      // Upload the file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "user_profiles", // Optional: Organize uploads into a folder
+        resource_type: "image",
+      });
+
+      // Save the secure URL of the uploaded image
+      user.image = result.secure_url;
     }
 
-    const updatedUser = await user.save();
-    res.json({ user: updatedUser });
+    // Perform role-specific updates
+    if (user.role === "STUDENT") {
+      await handleStudentUpdate(userId, researchInterests, contributions);
+    } else if (user.role === "FACULTY") {
+      await handleFacultyUpdate(
+        userId,
+        researchInterests,
+        availability,
+        publications
+      );
+    } else {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+
+    // Mark user as verified
+    user.verified = true;
+    user.updatedAt = Date.now();
+
+    // Save the user details
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "User details updated successfully", user });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating user details" });
   }
 };
 
-export { loginUser, registerUser, getUserinfo, getUserProfile };
+export {
+  loginUser,
+  registerUser,
+  getUserinfo,
+  getUserProfile,
+  updateUserDetails,
+};
