@@ -9,6 +9,7 @@ const ProfilePage = () => {
   const [newBio, setNewBio] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [message, setMessage] = useState("");
+  const [newResearchInterest, setNewResearchInterest] = useState("");
   const [dropdown, setDropdown] = useState(false);
 
   const handlesubLink = () => {
@@ -91,6 +92,29 @@ const ProfilePage = () => {
     }
   };
 
+  const handleResearchInterestSubmit = async () => {
+    try {
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const response = await axios.put(
+        `${apiDomain}/api/user/update`,
+        { researchInterests: newResearchInterest },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      setUser((prev) => ({ ...prev, researchInterests: newResearchInterest }));
+      setDropdown(false);
+      alert(
+        response.data.message || "Research interests updated successfully!"
+      );
+    } catch (error) {
+      console.error("Error updating research interests:", error);
+      alert("Failed to update research interests. Please try again.");
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -111,7 +135,7 @@ const ProfilePage = () => {
               />
             </div>
             <p>{user.researchInterests || "No research interests available"}</p>
-
+            <hr />
             <div className="flex items-center justify-between mt-4 mb-2">
               <h2 className="text-xl font-bold">Contributions</h2>
               <Link to="/contribution" className="ml-10">
@@ -137,15 +161,16 @@ const ProfilePage = () => {
               />
             </div>
             <p>{user.researchInterests || "No research interests available"}</p>
-
+            <hr />
             <div className="flex items-center justify-between mt-4 mb-2">
               <h2 className="text-xl font-bold">Publications</h2>
-              <button
-                onClick={() => navigateToEditSection("publication")}
-                className="text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                <i className="fas fa-pen"></i> {/* Font Awesome icon */}
-              </button>
+              <Link to="/contribution" className="ml-10">
+                <img
+                  src={assets.contribution_icon}
+                  className="w-7"
+                  alt="Logo"
+                />
+              </Link>
             </div>
             <p>{user.publications || "No publications available"}</p>
           </div>

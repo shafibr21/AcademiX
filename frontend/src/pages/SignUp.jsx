@@ -126,11 +126,38 @@ const SignUp = () => {
                   Department
                 </label>
                 <Field
-                  type="text"
+                  as="select"
                   id="department"
                   name="department"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
+                >
+                  <option value="">Select a department</option>
+                  <option value="Computer Science & Engineering">
+                    Computer Science & Engineering
+                  </option>
+                  <option value="Electrical & Electronics Engineering">
+                    Electrical & Electronics Engineering
+                  </option>
+                  <option value="Mechanical Engineering">
+                    Mechanical Engineering
+                  </option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                  <option value="Bachelor in Bussiness Administration">
+                    Bachelor in Bussiness Administration
+                  </option>
+                  <option value="Economics">Economics</option>
+                  <option value="Biologofy & Chemistry ">
+                    Biologofy & Chemistry{" "}
+                  </option>
+                  <option value="Biomedical Engineering">
+                    Biomedical Engineering
+                  </option>
+                  <option value="Biotechnology">Biotechnology</option>
+                  <option value="Chemical Engineering">
+                    Chemical Engineering
+                  </option>
+                  <option value="Chemistry">Chemistry</option>
+                </Field>
                 <ErrorMessage
                   name="department"
                   component="div"

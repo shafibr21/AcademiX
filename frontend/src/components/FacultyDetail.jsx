@@ -51,37 +51,6 @@ const FacultyDetail = () => {
       <p className="text-lg text-gray-700 mb-4">
         {selectedFaculty.userId.department}
       </p>
-
-      {/* Research Interests */}
-      <h2 className="text-2xl font-semibold mt-6">Research Interests</h2>
-      {selectedFaculty.researchInterests.length > 0 ? (
-        <ul className="list-disc list-inside mt-2">
-          {selectedFaculty.researchInterests.map((interest, index) => (
-            <li key={index} className="text-sm text-gray-700">
-              {interest}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-sm text-gray-500 mt-2">
-          No research interests listed.
-        </p>
-      )}
-
-      {/* Publications */}
-      <h2 className="text-2xl font-semibold mt-6">Publications</h2>
-      {selectedFaculty.publications.length > 0 ? (
-        <ul className="list-disc list-inside mt-2">
-          {selectedFaculty.publications.map((publication, index) => (
-            <li key={index} className="text-sm text-gray-700">
-              <strong>{publication.title}</strong> - {publication.journal} (
-              {publication.year})
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-sm text-gray-500 mt-2">No publications listed.</p>
-      )}
     </div>
   );
 };
