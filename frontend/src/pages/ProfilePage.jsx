@@ -8,6 +8,7 @@ const ProfilePage = () => {
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [newBio, setNewBio] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isEditingInterest, setIsEditingInterest] = useState(false);
   const [message, setMessage] = useState("");
   const [newResearchInterest, setNewResearchInterest] = useState("");
   const [dropdown, setDropdown] = useState(false);
@@ -91,7 +92,10 @@ const ProfilePage = () => {
       alert("Failed to upload image. Please try again.");
     }
   };
-
+  const handelResearchInterestEdit = () => {
+    setIsEditingInterest(true);
+    setNewResearchInterest(user.researchInterests || "");
+  };
   const handleResearchInterestSubmit = async () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
@@ -128,11 +132,30 @@ const ProfilePage = () => {
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-bold">Research Interests</h2>
               <img
-                onClick={() => setDropdown(!dropdown)}
+                onClick={handelResearchInterestEdit}
                 src={assets.edit_icon}
                 className="w-6 cursor-pointer"
                 alt="Profile"
               />
+              {isEditingInterest ? (
+                <div className="flex flex-col">
+                  <textarea
+                    className="border rounded p-2 w-full text-sm"
+                    value={newResearchInterest}
+                    onChange={(e) => setNewResearchInterest(e.target.value)}
+                  />
+                  <button
+                    onClick={handleResearchInterestSubmit}
+                    className="mt-2 bg-green-600 text-white py-2 px-4 rounded shadow-md hover:bg-green-700 transition-colors"
+                  >
+                    Submit
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <span>{user.bio || "No bio available"}</span>
+                </>
+              )}
             </div>
             <p>{user.researchInterests || "No research interests available"}</p>
             <hr />
