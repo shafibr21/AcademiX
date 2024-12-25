@@ -1,40 +1,79 @@
-import React, { createContext, useState, useEffect } from "react";
-import { faculty } from "../assets/assets";
-import { toast } from "react-toastify";
+import { createContext, useState, useEffect } from "react";
+const SupervisorContext = createContext();
 
-export const SearchContext = createContext();
-
-const SearchContextProvider = (props) => {
-  const [search, setSearch] = useState("");
+const SupervisorProvider = ({ children }) => {
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [filteredFaculties, setFilteredFaculties] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [facultyData, setFacultyData] = useState([]);
 
-  const getFacultyData = () => {
+  // Function to update filters from the UI
+  const updateFilters = (filters) => {
+    setSearchTerm(filters.searchTerm || "");
+    setSelectedDepartment(filters.department || "");
+    setSelectedTags(filters.tags || []);
+  };
+
+  // Function to fetch faculties based on current filters
+  const fetchFaculties = async () => {
+    setLoading(true);
+
     try {
-      setFacultyData(faculty);
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const params = new URLSearchParams();
+      if (searchTerm) params.append("searchTerm", searchTerm);
+      if (selectedDepartment) params.append("department", selectedDepartment);
+      if (selectedTags.length > 0)
+        params.append("tags", selectedTags.join(","));
+
+      const response = await fetch(
+        `${apiDomain}/api/faculty/getfaculty?${params.toString()}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const result = await response.json();
+
+      if (result) {
+        setFilteredFaculties(result);
+      } else {
+        console.error("Failed to fetch faculties");
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to load faculty data.");
+      console.error("Error fetching faculty data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Effect to fetch faculties whenever filters change
   useEffect(() => {
-    getFacultyData();
-  }, []);
-
-  const value = {
-    faculty: facultyData,
-    search,
-    setSearch,
-    showSearch,
-    setShowSearch,
-  };
+    fetchFaculties();
+  }, [selectedDepartment, selectedTags]);
 
   return (
-    <SearchContext.Provider value={value}>
-      {props.children}
-    </SearchContext.Provider>
+    <SupervisorContext.Provider
+      value={{
+        searchTerm,
+        setSearchTerm,
+        selectedDepartment,
+        setSelectedDepartment,
+        selectedTags,
+        setSelectedTags,
+        filteredFaculties,
+        updateFilters,
+        loading,
+        fetchFaculties,
+        showSearch,
+        setShowSearch,
+      }}
+    >
+      {children}
+    </SupervisorContext.Provider>
   );
 };
-
-export default SearchContextProvider;
+export { SupervisorContext, SupervisorProvider };

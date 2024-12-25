@@ -4,6 +4,7 @@ import "dotenv/config";
 import connectDB from "./config/mongodb.js";
 import connectCLoudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
+import facultyRouter from "./routes/facultyRoute.js";
 
 //App Config
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 
 // api endpoints
 app.use("/api/user", userRouter);
+app.use("/api/faculty", facultyRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working 404");
