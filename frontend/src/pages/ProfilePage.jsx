@@ -41,7 +41,7 @@ const ProfilePage = () => {
     setIsEditingBio(true);
     setNewBio(user.bio || "");
   };
-
+  // Handle bio submit
   const handleBioSubmit = async () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
@@ -64,7 +64,7 @@ const ProfilePage = () => {
       alert("Failed to update bio. Please try again.");
     }
   };
-
+  // Handle image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -92,50 +92,87 @@ const ProfilePage = () => {
       alert("Failed to upload image. Please try again.");
     }
   };
-  const handelResearchInterestEdit = () => {
+
+  // Fetch the research interests
+  useEffect(() => {
+    const fetchResearchInterests = async () => {
+      try {
+        const apiDomain = import.meta.env.VITE_API_DOMAIN;
+        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+
+        const response = await fetch(`${apiDomain}/api/user/research`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to fetch research interests");
+        }
+
+        setResearchInterests(data.researchInterests);
+      } catch (error) {
+        console.error("Error fetching research interests:", error);
+      }
+    };
+
+    fetchResearchInterests();
+  }, []);
+
+  // Update the research interests
+  const handleResearchInterestEdit = () => {
     setIsEditingInterest(true);
-    setNewResearchInterest(user.researchInterests || "");
+    setNewResearchInterest(
+      user.researchInterests ? user.researchInterests.join(", ") : ""
+    );
   };
+
   const handleResearchInterestSubmit = async () => {
     try {
+      const updatedInterests = newResearchInterest
+        .split(",")
+        .map((interest) => interest.trim());
+      const result = await updateResearchInterest(updatedInterests);
+
+      // Update the state with the new research interests
+      setResearchInterests(result.researchInterests);
+
+      // Reset the editing state
+      setIsEditingInterest(false);
+    } catch (error) {
+      console.error("Failed to update research interests:", error);
+      // Optionally, show an error message to the user
+    }
+  };
+
+  const updateResearchInterest = async (interests) => {
+    try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
 
-      // Convert newResearchInterest into an array if it's a single string
-      const researchInterestsArray =
-        typeof newResearchInterest === "string"
-          ? newResearchInterest.split(",").map((interest) => interest.trim())
-          : newResearchInterest;
+      const response = await fetch(`${apiDomain}/api/user/researchUpdate`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ interests }),
+      });
 
-      if (
-        !Array.isArray(researchInterestsArray) ||
-        researchInterestsArray.length === 0
-      ) {
-        alert("Please provide valid research interests.");
-        return;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update research interests");
       }
 
-      const response = await axios.put(
-        `${apiDomain}/api/user/researchUpdate`,
-        { interests: researchInterestsArray }, // Send as an array
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-
-      // Update the user state and reset the editing state
-      setUser((prev) => ({
-        ...prev,
-        researchInterests: researchInterestsArray,
-      }));
-      setIsEditingInterest(false); // Disable editing mode
-      alert(
-        response.data.message || "Research interests updated successfully!"
-      );
+      return data;
     } catch (error) {
       console.error("Error updating research interests:", error);
-      alert("Failed to update research interests. Please try again.");
+      throw error;
     }
   };
 
@@ -152,10 +189,10 @@ const ProfilePage = () => {
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-bold">Research Interests</h2>
               <img
-                onClick={handelResearchInterestEdit}
+                onClick={handleResearchInterestEdit}
                 src={assets.edit_icon}
                 className="w-6 cursor-pointer"
-                alt="Profile"
+                alt="Edit"
               />
               {isEditingInterest ? (
                 <div className="flex flex-col">
@@ -172,12 +209,16 @@ const ProfilePage = () => {
                   </button>
                 </div>
               ) : (
-                <div>
-                  <span>
-                    {user.researchInterests ||
-                      "No research interests available"}
-                  </span>
-                </div>
+                <ul className="list-disc pl-5">
+                  {user.researchInterests &&
+                  user.researchInterests.length > 0 ? (
+                    user.researchInterests.map((interest, index) => (
+                      <li key={index}>{interest}</li>
+                    ))
+                  ) : (
+                    <li>No research interests available</li>
+                  )}
+                </ul>
               )}
             </div>
             <hr />
