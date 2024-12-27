@@ -164,7 +164,7 @@ const getUserinfo = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.decoded.id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -259,7 +259,7 @@ const getResearchInterests = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    console.log(user);
     if (user.role === "FACULTY") {
       const faculty = await Faculty.findOne({ userId });
       if (!faculty) {
