@@ -5,6 +5,7 @@ import connectDB from "./config/mongodb.js";
 import connectCLoudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
 import facultyRouter from "./routes/facultyRoute.js";
+import studentRouter from "./routes/studentRoute.js";
 
 //App Config
 const app = express();
@@ -19,7 +20,7 @@ app.use(cors());
 // api endpoints
 app.use("/api/user", userRouter);
 app.use("/api/faculty", facultyRouter);
-
+app.use("/api/student", studentRouter);
 app.get("/", (req, res) => {
   res.send("API Working 404");
 });

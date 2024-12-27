@@ -250,6 +250,113 @@ const updateUserDetails = async (req, res) => {
   }
 };
 
+const getResearchInterests = async (req, res) => {
+  try {
+    const userId = req.decoded.id; // Get user ID from the token
+
+    // Fetch user role to determine how to retrieve research interests
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role === "FACULTY") {
+      const faculty = await Faculty.findOne({ userId });
+      if (!faculty) {
+        return res.status(404).json({ message: "Faculty profile not found" });
+      }
+      return res.json({ researchInterests: faculty.researchInterests });
+    } else if (user.role === "STUDENT") {
+      const student = await Student.findOne({ userId });
+      if (!student) {
+        return res.status(404).json({ message: "Student profile not found" });
+      }
+      return res.json({ researchInterests: student.researchInterests });
+    } else {
+      return res.status(400).json({ message: "Invalid user role" });
+    }
+  } catch (error) {
+    console.error("Error fetching research interests:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateResearchInterest = async (req, res) => {
+  const { interests } = req.body;
+
+  try {
+    const userId = req.decoded?.id; // Assuming user ID is extracted from token
+    const role = req.decoded?.role; // Role should be part of the token payload as well
+
+    if (!userId || !role) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!interests || !Array.isArray(interests)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid research interests format. It must be an array.",
+      });
+    }
+
+    let updatedUser;
+
+    if (role === "FACULTY") {
+      // Check if faculty exists
+      const faculty = await Faculty.findOne({ userId });
+
+      if (faculty) {
+        // Update the faculty's research interests
+        updatedUser = await Faculty.updateOne(
+          { userId },
+          { $set: { researchInterests: interests } }
+        );
+      } else {
+        // Create a new faculty entry if not exists
+        updatedUser = await Faculty.create({
+          userId,
+          researchInterests: interests,
+        });
+      }
+    } else if (role === "STUDENT") {
+      // Check if student exists
+      const student = await Student.findOne({ userId });
+
+      if (student) {
+        // Update the student's research interests
+        updatedUser = await Student.updateOne(
+          { userId },
+          { $set: { researchInterests: interests } }
+        );
+      } else {
+        // Create a new student entry if not exists
+        updatedUser = await Student.create({
+          userId,
+          researchInterests: interests,
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user role.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Research interests updated successfully.",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating research interests.",
+      error: error.message,
+    });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -257,4 +364,6 @@ export {
   getUserProfile,
   updateUserDetails,
   updateUserImage,
+  getResearchInterests,
+  updateResearchInterest,
 };

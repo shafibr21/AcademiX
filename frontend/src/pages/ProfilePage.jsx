@@ -100,7 +100,7 @@ const ProfilePage = () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
       const response = await axios.put(
-        `${apiDomain}/api/user/update`,
+        `${apiDomain}/api/user/researchUpdate`,
         { researchInterests: newResearchInterest },
         {
           headers: {
@@ -108,8 +108,13 @@ const ProfilePage = () => {
           },
         }
       );
-      setUser((prev) => ({ ...prev, researchInterests: newResearchInterest }));
-      setDropdown(false);
+
+      // Update the user state and reset the editing state
+      setUser((prev) => ({
+        ...prev,
+        researchInterests: newResearchInterest,
+      }));
+      setIsEditingInterest(false); // Disable editing mode
       alert(
         response.data.message || "Research interests updated successfully!"
       );
