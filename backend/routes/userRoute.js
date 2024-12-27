@@ -21,13 +21,7 @@ userRouter.post("/signup", registerUser);
 userRouter.get("/profile", checkAuth, getUserProfile);
 userRouter.get("/research", checkAuth, getResearchInterests);
 userRouter.put("/update", checkAuth, validateUpdateRequest, updateUserDetails);
-userRouter.put(
-  "/researchUpdate",
-  checkAuth,
-  validateUpdateRequest,
-  updateResearchInterest
-);
-
+userRouter.put("/researchUpdate", checkAuth, updateResearchInterest);
 userRouter.put(
   "/imgupload",
   checkAuth,

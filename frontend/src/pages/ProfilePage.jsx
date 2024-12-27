@@ -99,9 +99,24 @@ const ProfilePage = () => {
   const handleResearchInterestSubmit = async () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
+
+      // Convert newResearchInterest into an array if it's a single string
+      const researchInterestsArray =
+        typeof newResearchInterest === "string"
+          ? newResearchInterest.split(",").map((interest) => interest.trim())
+          : newResearchInterest;
+
+      if (
+        !Array.isArray(researchInterestsArray) ||
+        researchInterestsArray.length === 0
+      ) {
+        alert("Please provide valid research interests.");
+        return;
+      }
+
       const response = await axios.put(
         `${apiDomain}/api/user/researchUpdate`,
-        { researchInterests: newResearchInterest },
+        { interests: researchInterestsArray }, // Send as an array
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -112,7 +127,7 @@ const ProfilePage = () => {
       // Update the user state and reset the editing state
       setUser((prev) => ({
         ...prev,
-        researchInterests: newResearchInterest,
+        researchInterests: researchInterestsArray,
       }));
       setIsEditingInterest(false); // Disable editing mode
       alert(
@@ -156,9 +171,15 @@ const ProfilePage = () => {
                     Submit
                   </button>
                 </div>
-              ) : null}
+              ) : (
+                <div>
+                  <span>
+                    {user.researchInterests ||
+                      "No research interests available"}
+                  </span>
+                </div>
+              )}
             </div>
-            <p>{user.researchInterests || "No research interests available"}</p>
             <hr />
             <div className="flex items-center justify-between mt-4 mb-2">
               <h2 className="text-xl font-bold">Contributions</h2>
