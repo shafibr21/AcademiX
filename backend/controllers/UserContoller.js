@@ -5,7 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { User, Faculty, Student } from "../model/models.js";
 
 const createToken = (id, role) => {
-  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "3d" }); // Optional expiry time
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "3d" });
 };
 //update information of user(studnet & faculty)
 const handleStudentUpdate = async (
