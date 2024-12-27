@@ -151,11 +151,7 @@ const ProfilePage = () => {
                     Submit
                   </button>
                 </div>
-              ) : (
-                <>
-                  <span>{user.bio || "No bio available"}</span>
-                </>
-              )}
+              ) : null}
             </div>
             <p>{user.researchInterests || "No research interests available"}</p>
             <hr />
