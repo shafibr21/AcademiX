@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import axios from "axios";
+import { use } from "react";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -11,6 +12,7 @@ const ProfilePage = () => {
   const [isEditingInterest, setIsEditingInterest] = useState(false);
   const [message, setMessage] = useState("");
   const [newResearchInterest, setNewResearchInterest] = useState("");
+  const [researchInterests, setResearchInterests] = useState([]);
   const [dropdown, setDropdown] = useState(false);
 
   const handlesubLink = () => {
@@ -116,7 +118,7 @@ const ProfilePage = () => {
 
       const response = await axios.put(
         `${apiDomain}/api/user/researchUpdate`,
-        { interests: researchInterestsArray }, // Send as an array
+        { interests: researchInterestsArray.concat(researchInterests) }, // Send as an array
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -129,7 +131,8 @@ const ProfilePage = () => {
         ...prev,
         researchInterests: researchInterestsArray,
       }));
-      setIsEditingInterest(false); // Disable editing mode
+      setIsEditingInterest(false);
+      await fetchResearchInterests(); // Disable editing mode
       alert(
         response.data.message || "Research interests updated successfully!"
       );
@@ -138,6 +141,26 @@ const ProfilePage = () => {
       alert("Failed to update research interests. Please try again.");
     }
   };
+
+  const fetchResearchInterests = async () => {
+    try {
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+      const response = await axios.get(`${apiDomain}/api/user/research`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      setResearchInterests(response.data.researchInterests);
+      setContributions(response.data.contributions);
+      setPublications(response.data.publications);
+    } catch (error) {
+      console.error("Error fetching research interests:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchResearchInterests();
+  }, []);
 
   if (!user) {
     return <div>Loading...</div>;
@@ -174,8 +197,13 @@ const ProfilePage = () => {
               ) : (
                 <div>
                   <span>
-                    {user.researchInterests ||
-                      "No research interests available"}
+                    {researchInterests.length > 0
+                      ? researchInterests.map((interest, index) => (
+                          <span key={index} className="mr-2">
+                            {interest}
+                          </span>
+                        ))
+                      : "No research interests available"}
                   </span>
                 </div>
               )}
