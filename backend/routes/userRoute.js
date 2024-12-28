@@ -10,6 +10,7 @@ import {
   updateUserImage,
   getResearchInterests,
   updateResearchInterest,
+  fetchAllThesisIdeas,
 } from "../controllers/UserContoller.js";
 import upload from "../middleware/upload.js";
 
@@ -21,17 +22,13 @@ userRouter.post("/signup", registerUser);
 userRouter.get("/profile", checkAuth, getUserProfile);
 userRouter.get("/research", checkAuth, getResearchInterests);
 userRouter.put("/update", checkAuth, updateUserDetails);
-userRouter.put(
-  "/researchUpdate",
-  checkAuth,
-  
-  updateResearchInterest
-);
+userRouter.put("/researchUpdate", checkAuth, updateResearchInterest);
 userRouter.put(
   "/imgupload",
   checkAuth,
   upload.single("image"),
   updateUserImage
 );
+userRouter.get("/allThesisIdeas", checkAuth, fetchAllThesisIdeas);
 
 export default userRouter;

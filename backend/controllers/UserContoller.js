@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import { v2 as cloudinary } from "cloudinary";
-import { User, Faculty, Student } from "../model/models.js";
+import { User, Faculty, Student, ThesisIdea } from "../model/models.js";
 
 const createToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "3d" });
@@ -358,6 +358,28 @@ const updateResearchInterest = async (req, res) => {
   }
 };
 
+// Fetch All Thesis Ideas
+const fetchAllThesisIdeas = async (req, res) => {
+  try {
+    const thesisIdeas = await ThesisIdea.find().populate(
+      "studentId",
+      "name email"
+    );
+    res.status(200).json({
+      success: true,
+      message: "All thesis ideas fetched successfully.",
+      data: thesisIdeas,
+    });
+  } catch (error) {
+    console.error("Error fetching all thesis ideas:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -367,4 +389,5 @@ export {
   updateUserImage,
   getResearchInterests,
   updateResearchInterest,
+  fetchAllThesisIdeas,
 };

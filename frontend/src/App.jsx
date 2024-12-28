@@ -13,6 +13,7 @@ import SearchBar from "./components/SearchBar";
 import SignUp from "./pages/SignUp";
 import ProfilePage from "./pages/ProfilePage";
 import Contribution from "./pages/Contribution";
+import ProjectDetails from "./pages/ProjectDetails";
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/login" element={<Login />} />
         <Route path="/faculty/:id" element={<FacultyDetail />} />
+        <Route path="/projects/:id" element={<ProjectDetails />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contribution" element={<Contribution />} />

@@ -5,6 +5,7 @@ import axios from "axios";
 import { use } from "react";
 import ResearchInterest from "../components/ResearchInterest";
 import Contribution from "./Contribution";
+import Publication from "../components/Publication";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -103,9 +104,18 @@ const ProfilePage = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
       <div className="w-1/4 bg-white shadow-lg p-6">
         <ResearchInterest />
-        <Contribution />
+        {user.role === "STUDENT" ? (
+          <div className="justify-between mt-4 mb-2">
+            <Contribution />
+          </div>
+        ) : user.role === "FACULTY" ? (
+          <div>
+            <Publication />
+          </div>
+        ) : null}
       </div>
 
       {/* Sidebar

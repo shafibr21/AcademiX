@@ -84,14 +84,21 @@ const ResearchInterest = () => {
       </div>
       <div>
         {researchInterests.map((interest) => (
-          <div key={interest} className="flex items-center space-x-2">
-            <span>{interest}</span>
-            <img
-              onClick={() => deleteResearchInterest(interest)}
-              src={assets.cross_icon}
-              className="w-4 cursor-pointer"
-              alt="Delete"
-            />
+          <div
+            key={interest}
+            className="flex items-center space-x-2 justify-between  p-2"
+          >
+            <div>
+              <span>{interest}</span>
+            </div>
+            <div>
+              <img
+                onClick={() => deleteResearchInterest(interest)}
+                src={assets.cross_icon}
+                className="w-4 cursor-pointer"
+                alt="Delete"
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -78,10 +78,50 @@ const ContributionSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+//Thesis Idea Schema
+const ThesisIdeaSchema = new Schema({
+  title: { type: String, required: true },
+  abstract: { type: String },
+  authors: { type: [String], required: true },
+  publicationDate: { type: Date, required: true },
+  links: {
+    type: [String], // Array of links associated with the thesis idea
+    validate: {
+      validator: function (value) {
+        // Validate that all entries in the array are valid URLs
+        return value.every((link) => {
+          const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+          return urlRegex.test(link);
+        });
+      },
+      message: "All links must be valid URLs.",
+    },
+    default: [],
+  },
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Student",
+    required: true,
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  status: {
+    type: String,
+    enum: ["Pending", "Approved", "Rejected"],
+    default: "Pending",
+  },
+  researchArea: {
+    type: String,
+    required: true,
+    trim: true, // Example: "Artificial Intelligence", "Data Science", etc.
+  },
+});
+
 // Export Models
 const User = mongoose.model("User", UserSchema, "user");
 const Faculty = mongoose.model("Faculty", FacultySchema, "faculty");
 const Student = mongoose.model("Student", StudentSchema, "student");
+const ThesisIdea = mongoose.model("ThesisIdea", ThesisIdeaSchema, "thesisIdea");
 const Publication = mongoose.model(
   "Publication",
   PublicationSchema,
@@ -93,4 +133,4 @@ const Contribution = mongoose.model(
   "contribution"
 );
 
-export { User, Faculty, Student, Publication, Contribution };
+export { User, Faculty, Student, Publication, Contribution, ThesisIdea };
