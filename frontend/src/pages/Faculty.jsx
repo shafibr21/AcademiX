@@ -11,14 +11,10 @@ const Faculty = () => {
     setSearchTerm,
     selectedDepartment,
     setSelectedDepartment,
-    selectedTags,
-    setSelectedTags,
     filteredFaculties,
     updateFilters,
-    fetchFaculties,
     loading,
     showSearch,
-    setShowSearch,
   } = useContext(SupervisorContext);
 
   // Handle filter changes
@@ -64,10 +60,31 @@ const Faculty = () => {
                 onChange={handleFilterChange}
                 className="w-full px-4 py-3 rounded-lg bg-[hsl(220,15%,95%)] text-black focus:outline-none focus:ring-2 border border-[hsl(0,0,85%)]"
               >
-                <option value="">All Departments</option>
-                <option value="cs">Computer Science</option>
-                <option value="ee">Electrical Engineering</option>
-                <option value="me">Mechanical Engineering</option>
+                <option value="Computer Science & Engineering">
+                  Computer Science & Engineering
+                </option>
+                <option value="Electrical & Electronics Engineering">
+                  Electrical & Electronics Engineering
+                </option>
+                <option value="Mechanical Engineering">
+                  Mechanical Engineering
+                </option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Bachelor in Bussiness Administration">
+                  Bachelor in Bussiness Administration
+                </option>
+                <option value="Economics">Economics</option>
+                <option value="Biologofy & Chemistry ">
+                  Biologofy & Chemistry{" "}
+                </option>
+                <option value="Biomedical Engineering">
+                  Biomedical Engineering
+                </option>
+                <option value="Biotechnology">Biotechnology</option>
+                <option value="Chemical Engineering">
+                  Chemical Engineering
+                </option>
+                <option value="Chemistry">Chemistry</option>
               </select>
             </div>
             <div className="mt-4">

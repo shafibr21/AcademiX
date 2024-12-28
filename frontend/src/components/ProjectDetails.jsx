@@ -5,27 +5,43 @@ import axios from "axios";
 const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
-        const response = await axios.get(`${apiDomain}/api/projects/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
+        const response = await axios.get(
+          `${apiDomain}/api/user/allThesisIdeas/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
         setProject(response.data.project);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching project details:", error);
+        setError("Failed to fetch project details. Please try again later.");
+        setLoading(false);
       }
     };
 
     fetchProjectDetails();
   }, [id]);
 
-  if (!project) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!project) {
+    return <div>No project found.</div>;
   }
 
   return (

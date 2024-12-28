@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { use } from "react";
@@ -21,6 +21,8 @@ const ProfilePage = () => {
   const handlesubLink = () => {
     setDropdown(false);
   };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -98,6 +100,10 @@ const ProfilePage = () => {
     }
   };
 
+  const handlePostThesisIdea = () => {
+    navigate("/post-thesis-idea");
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -110,6 +116,12 @@ const ProfilePage = () => {
         {user.role === "STUDENT" ? (
           <div className="justify-between mt-4 mb-2">
             <Contribution />
+            <button
+              onClick={handlePostThesisIdea}
+              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
+            >
+              Post Thesis Idea
+            </button>
           </div>
         ) : user.role === "FACULTY" ? (
           <div>

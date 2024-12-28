@@ -11,6 +11,7 @@ import {
   getResearchInterests,
   updateResearchInterest,
   fetchAllThesisIdeas,
+  getThesisIdeaById,
 } from "../controllers/UserContoller.js";
 import upload from "../middleware/upload.js";
 
@@ -30,5 +31,6 @@ userRouter.put(
   updateUserImage
 );
 userRouter.get("/allThesisIdeas", checkAuth, fetchAllThesisIdeas);
+userRouter.get("/allThesisIdeas/:id", checkAuth, getThesisIdeaById);
 
 export default userRouter;
