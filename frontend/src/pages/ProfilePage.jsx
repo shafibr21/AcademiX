@@ -3,6 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { use } from "react";
+import ResearchInterest from "../components/ResearchInterest";
+import Contribution from "./Contribution";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -95,119 +97,18 @@ const ProfilePage = () => {
     }
   };
 
-  // Fetch the research interests
-  useEffect(() => {
-    const fetchResearchInterests = async () => {
-      try {
-        const apiDomain = import.meta.env.VITE_API_DOMAIN;
-        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-
-        const response = await fetch(`${apiDomain}/api/user/research`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Failed to fetch research interests");
-        }
-
-        setResearchInterests(data.researchInterests);
-      } catch (error) {
-        console.error("Error fetching research interests:", error);
-      }
-    };
-
-    fetchResearchInterests();
-  }, []);
-
-  // Update the research interests
-  const handleResearchInterestEdit = () => {
-    setIsEditingInterest(true);
-    setNewResearchInterest(
-      user.researchInterests ? user.researchInterests.join(", ") : ""
-    );
-  };
-
-  const handleResearchInterestSubmit = async () => {
-    try {
-      const updatedInterests = newResearchInterest
-        .split(",")
-        .map((interest) => interest.trim());
-      const result = await updateResearchInterest(updatedInterests);
-
-      // Update the state with the new research interests
-      setResearchInterests(result.researchInterests);
-
-      // Reset the editing state
-      setIsEditingInterest(false);
-    } catch (error) {
-      console.error("Failed to update research interests:", error);
-      // Optionally, show an error message to the user
-    }
-  };
-
-  const updateResearchInterest = async (interests) => {
-    try {
-      const apiDomain = import.meta.env.VITE_API_DOMAIN;
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-
-      const response = await axios.put(
-        `${apiDomain}/api/user/researchUpdate`,
-        { interests: researchInterestsArray }, // Send as an array
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-
-      // Update the user state and reset the editing state
-      setUser((prev) => ({
-        ...prev,
-        researchInterests: researchInterestsArray,
-      }));
-      setIsEditingInterest(false); // Disable editing mode
-      alert(
-        response.data.message || "Research interests updated successfully!"
-      );
-    } catch (error) {
-      console.error("Error updating research interests:", error);
-      throw error;
-    }
-  };
-
-  const fetchResearchInterests = async () => {
-    try {
-      const apiDomain = import.meta.env.VITE_API_DOMAIN;
-      const response = await axios.get(`${apiDomain}/api/user/research`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
-      setResearchInterests(response.data.researchInterests);
-      setContributions(response.data.contributions);
-      setPublications(response.data.publications);
-    } catch (error) {
-      console.error("Error fetching research interests:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchResearchInterests();
-  }, []);
-
   if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+      <div className="w-1/4 bg-white shadow-lg p-6">
+        <ResearchInterest />
+        <Contribution />
+      </div>
+
+      {/* Sidebar
       <div className="w-1/4 bg-white shadow-lg p-6">
         {user.role === "STUDENT" && (
           <div>
@@ -282,7 +183,7 @@ const ProfilePage = () => {
             <p>{user.publications || "No publications available"}</p>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-grow flex flex-col items-center justify-center p-8">

@@ -283,6 +283,7 @@ const getResearchInterests = async (req, res) => {
 
 const updateResearchInterest = async (req, res) => {
   const { interests } = req.body;
+  console.log(interests);
 
   try {
     const userId = req.decoded?.id; // Assuming user ID is extracted from token
