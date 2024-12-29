@@ -98,30 +98,6 @@ const postThesisIdea = async (req, res) => {
   }
 };
 
-// Fetch Thesis Ideas
-const fetchThesisIdeas = async (req, res) => {
-  try {
-    const { studentId } = req.query; // Assume studentId is sent as a query parameter
-
-    const filter = studentId ? { studentId } : {}; // Filter by studentId if provided
-
-    const thesisIdeas = await ThesisIdea.find(filter).populate("studentId"); // Populate student details if needed
-    res.status(200).json({
-      success: true,
-      message: "Thesis ideas fetched successfully.",
-      data: thesisIdeas,
-    });
-  } catch (error) {
-    console.error("Error fetching thesis ideas:", error);
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while fetching thesis ideas.",
-      error: error.message,
-    });
-  }
-
-};
-
 // Fetch a single thesis idea by ID
 const getThesisIdeaById = async (req, res) => {
   try {
@@ -139,6 +115,60 @@ const getThesisIdeaById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching thesis idea:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Fetch thesis ideas by student ID
+const getThesisIdeasByStudentId = async (req, res) => {
+  try {
+    const { studentId } = req.params; // Extract studentId from route params
+
+    // Validate the studentId
+    if (!studentId) {
+      return res.status(400).json({
+        success: false,
+        message: "Student ID is required.",
+      });
+    }
+
+    // Fetch thesis ideas filtered by studentId
+    const thesisIdeas = await ThesisIdea.find({ studentId })
+      .populate("studentId", "name email") // Optional: Populate student details
+      .exec();
+
+    // Check if any thesis ideas exist for the given studentId
+    if (!thesisIdeas.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No thesis ideas found for the provided student ID.",
+      });
+    }
+
+    // Format the response
+    const formattedThesisIdeas = thesisIdeas.map((idea) => ({
+      _id: idea._id,
+      title: idea.title,
+      abstract: idea.abstract,
+      authors: idea.authors,
+      publicationDate: idea.publicationDate,
+      links: idea.links,
+      status: idea.status,
+      researchArea: idea.researchArea,
+    }));
+
+    // Send the response
+    res.status(200).json({
+      success: true,
+      message: "Thesis ideas fetched successfully.",
+      data: formattedThesisIdeas,
+    });
+  } catch (error) {
+    console.error("Error fetching thesis ideas:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching thesis ideas.",
+      error: error.message,
+    });
   }
 };
 
@@ -187,7 +217,7 @@ export {
   getContributions,
   addContribution,
   postThesisIdea,
-  fetchThesisIdeas,
   getThesisIdeaById,
   updateThesisIdea,
+  getThesisIdeasByStudentId,
 };

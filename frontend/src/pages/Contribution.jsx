@@ -1,57 +1,82 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
-const Contribution = () => {
-  const { id } = useParams();
-  const { user } = useContext(AuthContext);
+const Contribution = (userId) => {
   const [thesisIdeas, setThesisIdeas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchThesisIdeas = async () => {
       try {
+        // Ensure userId is treated as a string
+        const stringUserId = String(userId);
+        console.log("Fetching thesis ideas for userId:", userId);
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
-        const token = localStorage.getItem("authToken"); // Assuming the token is stored in localStorage
-
-        const response = await fetch(
-          `${apiDomain}/api/student/getThesisideas?studentId=${id}`,
+        const response = await axios.get(
+          `${apiDomain}/api/student/getThesisideas/student/${userId}`,
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             },
           }
         );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Failed to fetch thesis ideas");
-        }
-
-        setThesisIdeas(data.thesisIdeas);
+        setThesisIdeas(response.data.data);
       } catch (error) {
         console.error("Error fetching thesis ideas:", error);
+        setError(
+          error.response?.data?.message || "Failed to fetch thesis ideas."
+        );
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchThesisIdeas();
-  }, [user]);
+    if (userId) fetchThesisIdeas();
+  }, [userId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">My Thesis Ideas</h2>
+      <h2 className="text-xl font-bold mb-4">Thesis Ideas</h2>
       {thesisIdeas.length > 0 ? (
         <ul className="list-disc pl-5">
           {thesisIdeas.map((idea) => (
             <li key={idea._id} className="mb-2">
-              <Link
-                to={`/projects/${idea._id}`}
-                className="text-blue-500 hover:underline"
-              >
-                {idea.title}
-              </Link>
+              <div>
+                <h3 className="text-lg font-semibold">{idea.title}</h3>
+                <p>{idea.abstract}</p>
+                <p>
+                  <strong>Research Area:</strong> {idea.researchArea}
+                </p>
+                <p>
+                  <strong>Authors:</strong> {idea.authors.join(", ")}
+                </p>
+                <p>
+                  <strong>Status:</strong> {idea.status}
+                </p>
+                <p>
+                  <strong>Publication Date:</strong>{" "}
+                  {new Date(idea.publicationDate).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Links:</strong>{" "}
+                  {idea.links.map((link, index) => (
+                    <a
+                      key={index}
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {link}
+                    </a>
+                  ))}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

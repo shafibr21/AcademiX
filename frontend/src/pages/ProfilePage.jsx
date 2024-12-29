@@ -119,7 +119,7 @@ const ProfilePage = () => {
         <ResearchInterest />
         {user.role === "STUDENT" ? (
           <div className="justify-between mt-4 mb-2">
-            <Contribution />
+            <Contribution userId={user._id} />
             <button
               onClick={handlePostThesisIdea}
               className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
@@ -195,6 +195,7 @@ const ProfilePage = () => {
                     </button>
                   </>
                 )}
+                <p>{user._id}</p>
               </div>
             </div>
           </div>
