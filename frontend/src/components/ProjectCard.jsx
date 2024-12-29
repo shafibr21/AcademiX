@@ -8,6 +8,7 @@ const ProjectCard = ({ idea }) => {
       to={`/projects/${idea._id}`}
       className="border rounded-lg p-4 shadow-md hover:bg-gray-100 transition-colors"
     >
+      <p>{idea.status}</p>
       <h2 className="text-lg font-semibold">{idea.title}</h2>
       <p className="text-sm text-gray-600">
         <strong>Research Area:</strong> {idea.researchArea}
@@ -35,10 +36,6 @@ const ProjectCard = ({ idea }) => {
           <p className="text-sm text-gray-500">No links provided.</p>
         )}
       </div>
-      <p className="text-xs text-gray-500 mt-2">
-        <strong>Publication Date:</strong>{" "}
-        {new Date(idea.publicationDate).toLocaleDateString()}
-      </p>
     </Link>
   );
 };

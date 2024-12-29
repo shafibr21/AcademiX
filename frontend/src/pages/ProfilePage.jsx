@@ -104,6 +104,10 @@ const ProfilePage = () => {
     navigate("/post-thesis-idea");
   };
 
+  const handleRequestThesisIdea = () => {
+    navigate("/");
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -126,86 +130,15 @@ const ProfilePage = () => {
         ) : user.role === "FACULTY" ? (
           <div>
             <Publication />
+            <button
+              onClick={handleRequestThesisIdea}
+              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
+            >
+              Thesis Idea Requests
+            </button>
           </div>
         ) : null}
       </div>
-
-      {/* Sidebar
-      <div className="w-1/4 bg-white shadow-lg p-6">
-        {user.role === "STUDENT" && (
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold">Research Interests</h2>
-              <img
-                onClick={handleResearchInterestEdit}
-                src={assets.edit_icon}
-                className="w-6 cursor-pointer"
-                alt="Edit"
-              />
-              {isEditingInterest ? (
-                <div className="flex flex-col">
-                  <textarea
-                    className="border rounded p-2 w-full text-sm"
-                    value={newResearchInterest}
-                    onChange={(e) => setNewResearchInterest(e.target.value)}
-                  />
-                  <button
-                    onClick={handleResearchInterestSubmit}
-                    className="mt-2 bg-green-600 text-white py-2 px-4 rounded shadow-md hover:bg-green-700 transition-colors"
-                  >
-                    Submit
-                  </button>
-                </div>
-              ) : (
-                <div>
-                  <span>
-                    {user.researchInterests ||
-                      "No research interests available"}
-                  </span>
-                </div>
-              )}
-            </div>
-            <hr />
-            <div className="flex items-center justify-between mt-4 mb-2">
-              <h2 className="text-xl font-bold">Contributions</h2>
-              <Link to="/contribution" className="ml-10">
-                <img
-                  src={assets.contribution_icon}
-                  className="w-7"
-                  alt="Logo"
-                />
-              </Link>
-            </div>
-            <p>{user.contributions || "No contributions available"}</p>
-          </div>
-        )}
-        {user.role === "FACULTY" && (
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold">Research Interests</h2>
-              <img
-                onClick={() => setDropdown(!dropdown)}
-                src={assets.edit_icon}
-                className="w-5 cursor-pointer"
-                alt="Profile"
-              />
-            </div>
-            <p>{user.researchInterests || "No research interests available"}</p>
-            <hr />
-            <div className="flex items-center justify-between mt-4 mb-2">
-              <h2 className="text-xl font-bold">Publications</h2>
-              <Link to="/contribution" className="ml-10">
-                <img
-                  src={assets.contribution_icon}
-                  className="w-7"
-                  alt="Logo"
-                />
-              </Link>
-            </div>
-            <p>{user.publications || "No publications available"}</p>
-          </div>
-        )}
-      </div> */}
 
       {/* Main Content */}
       <div className="flex-grow flex flex-col items-center justify-center p-8">
