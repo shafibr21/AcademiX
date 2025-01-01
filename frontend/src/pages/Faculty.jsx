@@ -87,19 +87,6 @@ const Faculty = () => {
                 <option value="Chemistry">Chemistry</option>
               </select>
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Research Interests
-              </label>
-              <input
-                type="text"
-                name="research"
-                value={searchTerm}
-                onChange={handleFilterChange}
-                placeholder="Search research interests..."
-                className="w-full px-4 py-3 rounded-lg bg-[hsl(220,15%,95%)] text-black focus:outline-none focus:ring-2 border border-[hsl(0,0,85%)]"
-              />
-            </div>
           </div>
         </AdvancedFilter>
       </div>

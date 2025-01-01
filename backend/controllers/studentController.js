@@ -45,10 +45,16 @@ const addContribution = async (req, res) => {
 
 const postThesisIdea = async (req, res) => {
   try {
-    const { title, abstract, authors, publicationDate, links, researchArea } =
-      req.body;
+    const {
+      title,
+      abstract,
+      authors,
+      publicationDate,
+      links,
+      researchArea,
+      facultyId,
+    } = req.body;
 
-    // Assuming `req.decoded` contains the authenticated user's data
     const studentId = req.decoded?.id;
 
     if (!studentId) {
@@ -56,11 +62,17 @@ const postThesisIdea = async (req, res) => {
     }
 
     // Validate required fields
-    if (!title || !authors || !publicationDate || !researchArea) {
+    if (!title || !authors || !publicationDate || !researchArea || !facultyId) {
       return res.status(400).json({
         message:
-          "Title, authors, publication date, and research area are required fields.",
+          "Title, authors, publication date, research area, and faculty are required fields.",
       });
+    }
+
+    // Check if faculty exists
+    const faculty = await Faculty.findById(facultyId);
+    if (!faculty) {
+      return res.status(404).json({ message: "Selected faculty not found." });
     }
 
     // Validate links
@@ -78,10 +90,14 @@ const postThesisIdea = async (req, res) => {
       links,
       studentId,
       researchArea,
+      facultyId,
     });
 
-    // Save to database
     await thesisIdea.save();
+
+    // Add the thesis idea to the faculty's thesisRequests array
+    faculty.thesisRequests.push(thesisIdea._id);
+    await faculty.save();
 
     res.status(201).json({
       success: true,

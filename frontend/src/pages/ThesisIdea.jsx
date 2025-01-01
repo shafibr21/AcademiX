@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Contribution = ({ userId }) => {
+const ThesisIdea = ({ userId }) => {
   const [thesisIdeas, setThesisIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -84,4 +84,4 @@ const Contribution = ({ userId }) => {
   );
 };
 
-export default Contribution;
+export default ThesisIdea;

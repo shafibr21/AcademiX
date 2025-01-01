@@ -32,6 +32,9 @@ const FacultySchema = new Schema({
   researchInterests: { type: [String], required: true },
   availability: { type: Schema.Types.Mixed }, // JSON type
   publications: [{ type: mongoose.Schema.Types.ObjectId, ref: "Publication" }],
+  thesisRequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "ThesisIdea" }, // Track pending thesis requests
+  ],
 });
 
 // Student Schema
@@ -85,10 +88,9 @@ const ThesisIdeaSchema = new Schema({
   authors: { type: [String], required: true },
   publicationDate: { type: Date, required: true },
   links: {
-    type: [String], // Array of links associated with the thesis idea
+    type: [String],
     validate: {
       validator: function (value) {
-        // Validate that all entries in the array are valid URLs
         return value.every((link) => {
           const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
           return urlRegex.test(link);
@@ -103,6 +105,11 @@ const ThesisIdeaSchema = new Schema({
     ref: "User",
     required: true,
   },
+  facultyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
+    required: true,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   status: {
@@ -113,7 +120,7 @@ const ThesisIdeaSchema = new Schema({
   researchArea: {
     type: String,
     required: true,
-    trim: true, // Example: "Artificial Intelligence", "Data Science", etc.
+    trim: true,
   },
 });
 

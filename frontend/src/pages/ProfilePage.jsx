@@ -4,8 +4,8 @@ import { assets } from "../assets/assets";
 import axios from "axios";
 import { use } from "react";
 import ResearchInterest from "../components/ResearchInterest";
-import Contribution from "./Contribution";
 import Publication from "../components/Publication";
+import ThesisIdea from "./ThesisIdea";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -105,7 +105,7 @@ const ProfilePage = () => {
   };
 
   const handleRequestThesisIdea = () => {
-    navigate("/");
+    navigate("/get-thesis-requests");
   };
 
   if (!user) {
@@ -119,7 +119,7 @@ const ProfilePage = () => {
         <ResearchInterest />
         {user.role === "STUDENT" ? (
           <div className="justify-between mt-4 mb-2">
-            <Contribution userId={user._id} />
+            <ThesisIdea userId={user._id} />
             <button
               onClick={handlePostThesisIdea}
               className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
@@ -195,7 +195,6 @@ const ProfilePage = () => {
                     </button>
                   </>
                 )}
-                <p>{user._id}</p>
               </div>
             </div>
           </div>
