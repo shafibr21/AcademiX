@@ -9,7 +9,7 @@ const ThesisReview = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [reviewText, setReviewText] = useState("");
-  console.log(thesisId);
+
   useEffect(() => {
     const fetchThesis = async () => {
       try {
@@ -35,13 +35,14 @@ const ThesisReview = () => {
     fetchThesis();
   }, [thesisId]);
 
-  const handleAction = async (status) => {
+  const handleReject = async () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
 
+      // Change status to "Rejected"
       await axios.patch(
         `${apiDomain}/api/faculty/thesis/${thesisId}`,
-        { status },
+        { status: "Rejected" },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -49,7 +50,45 @@ const ThesisReview = () => {
         }
       );
 
-      navigate("/thesis-requests"); // Redirect after action
+      alert("Thesis rejected successfully!");
+      navigate("/profile"); // Redirect to profile page
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleApprove = async () => {
+    try {
+      const apiDomain = import.meta.env.VITE_API_DOMAIN;
+
+      // Approve the thesis
+      await axios.patch(
+        `${apiDomain}/api/faculty/thesis/${thesisId}`,
+        { status: "Approved" },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      // Create a communication channel
+      await axios.post(
+        `${apiDomain}/api/channels/createChannel`,
+        {
+          thesisId,
+          studentId: thesis.studentId._id,
+          facultyId: thesis.facultyId._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      alert("Thesis approved and communication channel created!");
+      navigate("/profile"); // Redirect to profile page
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     }
@@ -59,6 +98,7 @@ const ThesisReview = () => {
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
 
+      // Submit the review
       await axios.post(
         `${apiDomain}/api/faculty/thesis/${thesisId}/review`,
         { review: reviewText },
@@ -71,6 +111,7 @@ const ThesisReview = () => {
 
       setReviewText(""); // Clear the review text
       alert("Review submitted successfully!");
+      navigate("/profile"); // Redirect to profile page
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     }
@@ -83,6 +124,7 @@ const ThesisReview = () => {
       <div className="text-gray-500">There are no requests currently.</div>
     );
   }
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h1 className="text-2xl font-bold mb-6">{thesis.title}</h1>
@@ -96,13 +138,13 @@ const ThesisReview = () => {
       <div className="mt-6 space-y-4">
         <button
           className="px-4 py-2 bg-green-500 text-white rounded"
-          onClick={() => handleAction("Approved")}
+          onClick={handleApprove}
         >
           Approve
         </button>
         <button
           className="px-4 py-2 bg-red-500 text-white rounded"
-          onClick={() => handleAction("Rejected")}
+          onClick={handleReject}
         >
           Reject
         </button>

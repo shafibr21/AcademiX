@@ -8,6 +8,7 @@ import {
   getThesisRequestsById,
   updateThesisStatus,
 } from "../controllers/facultyController.js";
+import { createChannel } from "../controllers/ChannelController.js";
 
 const facultyRouter = express.Router();
 
@@ -17,5 +18,6 @@ facultyRouter.get("/thesisrequests/:id", checkAuth, getThesisRequestsById);
 facultyRouter.get("/thesis-review/:id", checkAuth, getThesisById);
 facultyRouter.patch("/thesis/:id", checkAuth, updateThesisStatus);
 facultyRouter.post("/thesis/:id/review", checkAuth, addThesisReview);
+facultyRouter.patch("thesis-approved/:id", checkAuth, createChannel);
 
 export default facultyRouter;

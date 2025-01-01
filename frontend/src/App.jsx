@@ -16,6 +16,7 @@ import ProjectDetails from "./components/ProjectDetails";
 import PostThesisIdea from "./pages/PostThesisIdea";
 import ThesisIdea from "./pages/ThesisIdea";
 import ThesisReview from "./pages/ThesisReview";
+import Channel from "./pages/Channel";
 
 const App = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/contribution" element={<ThesisIdea />} />
         <Route path="/post-thesis-idea" element={<PostThesisIdea />} />
         <Route path="/thesis-review/:thesisId" element={<ThesisReview />} />
+        <Route path="/channels/" element={<Channel />} />
       </Routes>
     </div>
   );

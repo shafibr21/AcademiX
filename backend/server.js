@@ -6,6 +6,7 @@ import connectCLoudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
 import facultyRouter from "./routes/facultyRoute.js";
 import studentRouter from "./routes/studentRoute.js";
+import channelRouter from "./routes/channelRoutes.js";
 
 //App Config
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 // api endpoints
+app.use("/api/channels", channelRouter);
 app.use("/api/user", userRouter);
 app.use("/api/faculty", facultyRouter);
 app.use("/api/student", studentRouter);

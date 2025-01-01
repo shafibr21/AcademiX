@@ -80,7 +80,7 @@ const ContributionSchema = new Schema({
   },
   createdAt: { type: Date, default: Date.now },
 });
-
+// Thesis Idea Schema
 const ThesisIdeaSchema = new Schema({
   title: { type: String, required: true },
   abstract: { type: String },
@@ -123,7 +123,32 @@ const ThesisIdeaSchema = new Schema({
   },
   review: { type: String, default: "" }, // Added field for reviews
 });
-
+// Message Schema
+const MessageSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  content: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
+//  Channel Schema
+const ChannelSchema = new mongoose.Schema({
+  thesisId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ThesisIdea",
+    required: true,
+  },
+  facultyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
+    required: true,
+  },
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  messages: [MessageSchema],
+  createdAt: { type: Date, default: Date.now },
+});
 // Export Models
 const User = mongoose.model("User", UserSchema, "user");
 const Faculty = mongoose.model("Faculty", FacultySchema, "faculty");
@@ -139,5 +164,14 @@ const Contribution = mongoose.model(
   ContributionSchema,
   "contribution"
 );
+const Channel = mongoose.model("Channel", ChannelSchema, "channel");
 
-export { User, Faculty, Student, Publication, Contribution, ThesisIdea };
+export {
+  User,
+  Faculty,
+  Student,
+  Publication,
+  Contribution,
+  ThesisIdea,
+  Channel,
+};
