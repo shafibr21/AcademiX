@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ThesisRequests = ({ userId }) => {
   const [thesisRequests, setThesisRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchThesisRequests = async () => {
       try {
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
 
-        // Debugging API domain and userId
-        console.log("API Domain:", apiDomain);
-        console.log("User ID:", userId);
-
-        // Ensure required variables are present
-        if (!apiDomain) {
-          throw new Error(
-            "API domain is not defined in environment variables."
-          );
-        }
-        if (!userId) {
-          throw new Error("User ID is not provided.");
+        if (!apiDomain || !userId) {
+          throw new Error("Missing API domain or user ID.");
         }
 
         const response = await axios.get(
@@ -34,28 +26,16 @@ const ThesisRequests = ({ userId }) => {
           }
         );
 
-        // Debugging response data
-        console.log("Thesis Requests Response:", response.data);
-
         setThesisRequests(response.data.thesisRequests);
       } catch (error) {
-        console.error("Error fetching thesis requests:", error);
-
-        // Enhanced error handling
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          setError(error.response.data.message || "An error occurred.");
-        } else {
-          setError(error.message || "An unexpected error occurred.");
-        }
+        setError(error.response?.data?.message || error.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchThesisRequests();
-  }, [userId]); // Ensure this dependency is properly set
+  }, [userId]);
 
   if (loading) return <div>Loading thesis requests...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
@@ -68,7 +48,8 @@ const ThesisRequests = ({ userId }) => {
           {thesisRequests.map((thesis) => (
             <li
               key={thesis._id}
-              className="mb-4 p-4 border border-gray-300 rounded-lg shadow-sm"
+              onClick={() => navigate(`/thesis-review/${thesis._id}`)}
+              className="cursor-pointer mb-4 p-4 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100"
             >
               <h2 className="text-xl font-semibold">{thesis.title}</h2>
               <p className="mt-2 text-gray-600">{thesis.abstract}</p>

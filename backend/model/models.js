@@ -81,7 +81,6 @@ const ContributionSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-//Thesis Idea Schema
 const ThesisIdeaSchema = new Schema({
   title: { type: String, required: true },
   abstract: { type: String },
@@ -114,7 +113,7 @@ const ThesisIdeaSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
   status: {
     type: String,
-    enum: ["Pending", "Approved", "Rejected"],
+    enum: ["Pending", "Approved", "Rejected", "Pending Changes"],
     default: "Pending",
   },
   researchArea: {
@@ -122,6 +121,7 @@ const ThesisIdeaSchema = new Schema({
     required: true,
     trim: true,
   },
+  review: { type: String, default: "" }, // Added field for reviews
 });
 
 // Export Models

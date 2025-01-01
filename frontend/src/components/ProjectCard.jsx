@@ -8,7 +8,17 @@ const ProjectCard = ({ idea }) => {
       to={`/projects/${idea._id}`}
       className="border rounded-lg p-4 shadow-md hover:bg-gray-100 transition-colors"
     >
-      <p>{idea.status}</p>
+      <p
+        className={`${
+          idea.status === "Approved"
+            ? "bg-green-400"
+            : idea.status === "Pending Changes"
+            ? "bg-orange-300"
+            : "bg-red-600"
+        } p-2`}
+      >
+        {idea.status}
+      </p>
       <h2 className="text-lg font-semibold">{idea.title}</h2>
       <p className="text-sm text-gray-600">
         <strong>Research Area:</strong> {idea.researchArea}

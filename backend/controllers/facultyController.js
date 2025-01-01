@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import { v2 as cloudinary } from "cloudinary";
-import { User, Faculty, Student } from "../model/models.js";
+import { User, Faculty, Student, ThesisIdea } from "../model/models.js";
 
 // Get all faculty members
 const getFaculty = async (req, res) => {
@@ -67,13 +67,14 @@ const getFacultyById = async (req, res) => {
 // for getting the thesis requests by the facultyId
 const getThesisRequestsById = async (req, res) => {
   try {
-    const facultyId = req.params.id; // Use the id passed in the route
+    const userId = req.params.id; // Use the userId passed in the route
 
-    if (!facultyId) {
+    if (!userId) {
       return res.status(401).json({ message: "Unauthorized user." });
     }
 
-    const faculty = await Faculty.findById(facultyId).populate({
+    // Fetch the faculty based on userId
+    const faculty = await Faculty.findOne({ userId }).populate({
       path: "thesisRequests",
       populate: [
         { path: "studentId", select: "name email" },
@@ -84,7 +85,6 @@ const getThesisRequestsById = async (req, res) => {
         },
       ],
     });
-    console.log(faculty);
 
     if (!faculty) {
       return res.status(404).json({ message: "Faculty not found." });
@@ -103,30 +103,103 @@ const getThesisRequestsById = async (req, res) => {
     });
   }
 };
-// For geting the facultyId from the userId
-const getFacultyProfile = async (req, res) => {
+
+const getThesisById = async (req, res) => {
   try {
-    // Find the user by the decoded ID and exclude the password
-    const user = await User.findById(req.decoded.id)
-      .select("-password")
-      .populate("facultyId"); // Populate the facultyId if it exists
+    const thesisId = req.params.id;
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const thesis = await ThesisIdea.findById(thesisId)
+      .populate("studentId", "name email")
+      .populate("facultyId", "userId")
+      .populate({
+        path: "facultyId",
+        populate: { path: "userId", select: "name" },
+      });
+
+    if (!thesis) {
+      return res.status(404).json({ message: "Thesis not found." });
     }
 
-    // Check if the user is a faculty member
-    if (user.role === "FACULTY") {
-      const faculty = await Faculty.findOne({ userId: user._id });
-      if (faculty) {
-        user.facultyId = faculty._id; // Add the facultyId manually if not already populated
-      }
-    }
-
-    res.json({ user });
+    res.status(200).json(thesis);
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Error fetching thesis details:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching thesis details.",
+      error: error.message,
+    });
   }
 };
-export { getFaculty, getFacultyById, getThesisRequestsById, getFacultyProfile };
+
+const updateThesisStatus = async (req, res) => {
+  try {
+    const thesisId = req.params.id;
+    const { status } = req.body;
+
+    if (!["Approved", "Rejected"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value." });
+    }
+
+    const thesis = await ThesisIdea.findById(thesisId);
+
+    if (!thesis) {
+      return res.status(404).json({ message: "Thesis not found." });
+    }
+
+    thesis.status = status;
+    thesis.updatedAt = Date.now();
+    await thesis.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Thesis status updated to ${status}.`,
+    });
+  } catch (error) {
+    console.error("Error updating thesis status:", error);
+    res.status(500).json({
+      message: "An error occurred while updating thesis status.",
+      error: error.message,
+    });
+  }
+};
+
+const addThesisReview = async (req, res) => {
+  try {
+    const thesisId = req.params.id;
+    const { review } = req.body;
+
+    if (!review || review.trim() === "") {
+      return res.status(400).json({ message: "Review cannot be empty." });
+    }
+
+    const thesis = await ThesisIdea.findById(thesisId);
+
+    if (!thesis) {
+      return res.status(404).json({ message: "Thesis not found." });
+    }
+
+    thesis.review = review;
+    thesis.status = "Pending Changes";
+    thesis.updatedAt = Date.now();
+    await thesis.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Review added successfully.",
+    });
+  } catch (error) {
+    console.error("Error adding review:", error);
+    res.status(500).json({
+      message: "An error occurred while adding the review.",
+      error: error.message,
+    });
+  }
+};
+
+export {
+  getFaculty,
+  getFacultyById,
+  getThesisRequestsById,
+  getThesisById,
+  updateThesisStatus,
+  addThesisReview,
+};

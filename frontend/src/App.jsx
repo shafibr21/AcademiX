@@ -15,7 +15,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ProjectDetails from "./components/ProjectDetails";
 import PostThesisIdea from "./pages/PostThesisIdea";
 import ThesisIdea from "./pages/ThesisIdea";
-import ThesisRequests from "./pages/ThesisRequest";
+import ThesisReview from "./pages/ThesisReview";
 
 const App = () => {
   const location = useLocation();
@@ -37,6 +37,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contribution" element={<ThesisIdea />} />
         <Route path="/post-thesis-idea" element={<PostThesisIdea />} />
+        <Route path="/thesis-review/:thesisId" element={<ThesisReview />} />
       </Routes>
     </div>
   );
