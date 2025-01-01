@@ -37,7 +37,6 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contribution" element={<ThesisIdea />} />
         <Route path="/post-thesis-idea" element={<PostThesisIdea />} />
-        <Route path="/get-thesis-requests" element={<ThesisRequests />} />
       </Routes>
     </div>
   );

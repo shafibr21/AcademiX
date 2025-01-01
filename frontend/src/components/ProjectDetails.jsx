@@ -55,11 +55,11 @@ const ProjectDetails = () => {
         <strong>Publication Date:</strong>{" "}
         {new Date(project.publicationDate).toLocaleDateString()}
       </div>
-      <div className="mb-4">
+      <div className="mb-4 ">
         <strong>Links:</strong>
         {project.links.length > 0 ? (
           project.links.map((link, index) => (
-            <div key={index}>
+            <div key={index} className="mt-2 p-4 bg-gray-100 rounded-lg">
               <a
                 href={link}
                 target="_blank"
@@ -73,6 +73,11 @@ const ProjectDetails = () => {
         ) : (
           <p className="text-sm text-gray-500">No links provided.</p>
         )}
+
+        <div className="mb-4 p-4">
+          <strong>Faculty Name:</strong>{" "}
+          {project.facultyId?.userId?.name || "Not available"}
+        </div>
       </div>
     </div>
   );

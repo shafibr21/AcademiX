@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ThesisRequests = () => {
+const ThesisRequests = ({ userId }) => {
   const [thesisRequests, setThesisRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -10,28 +10,55 @@ const ThesisRequests = () => {
     const fetchThesisRequests = async () => {
       try {
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
+
+        // Debugging API domain and userId
+        console.log("API Domain:", apiDomain);
+        console.log("User ID:", userId);
+
+        // Ensure required variables are present
+        if (!apiDomain) {
+          throw new Error(
+            "API domain is not defined in environment variables."
+          );
+        }
+        if (!userId) {
+          throw new Error("User ID is not provided.");
+        }
+
         const response = await axios.get(
-          `${apiDomain}/api/faculty/thesisrequests`,
+          `${apiDomain}/api/faculty/thesisrequests/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             },
           }
         );
+
+        // Debugging response data
+        console.log("Thesis Requests Response:", response.data);
+
         setThesisRequests(response.data.thesisRequests);
       } catch (error) {
         console.error("Error fetching thesis requests:", error);
-        setError("Failed to load thesis requests. Please try again.");
+
+        // Enhanced error handling
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          setError(error.response.data.message || "An error occurred.");
+        } else {
+          setError(error.message || "An unexpected error occurred.");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchThesisRequests();
-  }, []);
+  }, [userId]); // Ensure this dependency is properly set
 
   if (loading) return <div>Loading thesis requests...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">

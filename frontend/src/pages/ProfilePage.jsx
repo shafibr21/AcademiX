@@ -6,6 +6,7 @@ import { use } from "react";
 import ResearchInterest from "../components/ResearchInterest";
 import Publication from "../components/Publication";
 import ThesisIdea from "./ThesisIdea";
+import ThesisRequests from "./ThesisRequest";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -104,10 +105,6 @@ const ProfilePage = () => {
     navigate("/post-thesis-idea");
   };
 
-  const handleRequestThesisIdea = () => {
-    navigate("/get-thesis-requests");
-  };
-
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -129,13 +126,7 @@ const ProfilePage = () => {
           </div>
         ) : user.role === "FACULTY" ? (
           <div>
-            <Publication />
-            <button
-              onClick={handleRequestThesisIdea}
-              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
-            >
-              Thesis Idea Requests
-            </button>
+            <ThesisRequests userId={user._id} />
           </div>
         ) : null}
       </div>

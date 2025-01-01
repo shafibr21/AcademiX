@@ -202,7 +202,7 @@ const updateUserImage = async (req, res) => {
       .json({ error: "An error occurred while updating user details" });
   }
 };
-
+// Update User Bio
 const updateUserDetails = async (req, res) => {
   const userId = req.decoded.id;
   const { bio, researchInterests, availability, contributions, publications } =
@@ -249,7 +249,7 @@ const updateUserDetails = async (req, res) => {
       .json({ error: "An error occurred while updating user details" });
   }
 };
-
+// Fetch user reasearch interests
 const getResearchInterests = async (req, res) => {
   try {
     const userId = req.decoded.id; // Get user ID from the token
@@ -280,7 +280,7 @@ const getResearchInterests = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
+// Update user research interests
 const updateResearchInterest = async (req, res) => {
   const { interests } = req.body;
   console.log(interests);
@@ -379,10 +379,17 @@ const fetchAllThesisIdeas = async (req, res) => {
     });
   }
 };
-
+// Get Thesis Idea by ID
 const getThesisIdeaById = async (req, res) => {
   try {
-    const project = await ThesisIdea.findById(req.params.id);
+    const project = await ThesisIdea.findById(req.params.id).populate({
+      path: "facultyId",
+      select: "userId", // Populate the faculty's userId (reference to User schema)
+      populate: {
+        path: "userId",
+        select: "name", // Populate the user's name
+      },
+    });
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
