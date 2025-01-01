@@ -72,9 +72,7 @@ const ProjectDetails = () => {
           ))
         ) : (
           <p className="text-sm text-gray-500">No links provided.</p>
-
         )}
-        <p>{project.studentId}</p>
       </div>
     </div>
   );

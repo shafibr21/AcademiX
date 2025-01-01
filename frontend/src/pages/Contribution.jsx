@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Contribution = (userId) => {
+const Contribution = ({ userId }) => {
   const [thesisIdeas, setThesisIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchThesisIdeas = async () => {
@@ -36,53 +37,49 @@ const Contribution = (userId) => {
     if (userId) fetchThesisIdeas();
   }, [userId]);
 
+  const handleCardClick = (ideaId) => {
+    // Navigate to a detailed view or perform an action
+    navigate(`/projects/${ideaId}`);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Thesis Ideas</h2>
-      {thesisIdeas.length > 0 ? (
-        <ul className="list-disc pl-5">
-          {thesisIdeas.map((idea) => (
-            <li key={idea._id} className="mb-2">
-              <div>
-                <h3 className="text-lg font-semibold">{idea.title}</h3>
-                <p>{idea.abstract}</p>
-                <p>
-                  <strong>Research Area:</strong> {idea.researchArea}
-                </p>
-                <p>
-                  <strong>Authors:</strong> {idea.authors.join(", ")}
-                </p>
-                <p>
-                  <strong>Status:</strong> {idea.status}
-                </p>
-                <p>
-                  <strong>Publication Date:</strong>{" "}
-                  {new Date(idea.publicationDate).toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Links:</strong>{" "}
-                  {idea.links.map((link, index) => (
-                    <a
-                      key={index}
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      {link}
-                    </a>
-                  ))}
-                </p>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        Thesis Ideas
+      </h2>
+      <div className="space-y-4">
+        {thesisIdeas.map((idea) => (
+          <div
+            key={idea._id}
+            className="flex items-center bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4 cursor-pointer"
+            onClick={() => handleCardClick(idea._id)}
+          >
+            {/* Thumbnail Placeholder */}
+            <div className="w-24 h-24 bg-blue-100 rounded-md flex-shrink-0 flex items-center justify-center text-blue-500 font-bold text-xl">
+              {idea.title[0]}
+            </div>
+
+            {/* Card Details */}
+            <div className="ml-4 flex-grow">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                {idea.title}
+              </h3>
+              <div className="text-gray-700 mb-1">
+                <span className="font-semibold">Research Area: </span>
+                {idea.researchArea}
               </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No thesis ideas available</p>
-      )}
+              <div className="text-gray-700 text-sm">
+                <span className="font-semibold">Authors: </span>
+                {idea.authors.slice(0, 2).join(", ")}
+                {idea.authors.length > 2 && " and others"}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
