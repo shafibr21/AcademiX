@@ -4,6 +4,7 @@ import FacultyCard from "../components/FacultyCard";
 import { SupervisorContext } from "../context/SearchContext";
 import SearchBar from "../components/SearchBar";
 import AdvancedFilter from "../components/AdvancedFilter";
+import Title from "../components/Titile";
 
 const Faculty = () => {
   const {
@@ -43,9 +44,9 @@ const Faculty = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {showSearch && <SearchBar />}
-      <h1 className="text-2xl font-bold text-center text-blue-500 mb-6">
-        Faculty Directory
-      </h1>
+      <div className="text-center text-2xl pt-5 border-t">
+        <Title text1={"Faculty"} text2={"Directory"} />
+      </div>
       <div className="flex justify-between items-center mt-2 relative">
         <AdvancedFilter>
           <div className="flex flex-col justify-center p-5 ">

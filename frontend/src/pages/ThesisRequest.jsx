@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Title from "../components/Titile";
 
 const ThesisRequests = ({ userId }) => {
   const [thesisRequests, setThesisRequests] = useState([]);
@@ -42,7 +43,9 @@ const ThesisRequests = ({ userId }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6">Thesis Idea Requests</h1>
+      <div className="text-center text-2xl pt-5 border-t">
+        <Title text1={"Thesis Idea"} text2={"Request"} />
+      </div>
       {thesisRequests.length > 0 ? (
         <ul>
           {thesisRequests.map((thesis) => (

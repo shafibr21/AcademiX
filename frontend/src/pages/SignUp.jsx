@@ -146,9 +146,7 @@ const SignUp = () => {
                     Bachelor in Bussiness Administration
                   </option>
                   <option value="Economics">Economics</option>
-                  <option value="Biologofy & Chemistry ">
-                    Biologofy & Chemistry{" "}
-                  </option>
+                  <option value="Biologoy ">Biologoy </option>
                   <option value="Biomedical Engineering">
                     Biomedical Engineering
                   </option>

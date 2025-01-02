@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { assets } from "../assets/assets";
+import Title from "./Titile";
 
 const ResearchInterest = () => {
   const [researchInterests, setResearchInterests] = useState([]);
@@ -74,7 +75,9 @@ const ResearchInterest = () => {
   return (
     <>
       <div className="flex items-center justify-around mb-2">
-        <h2 className="text-xl font-bold bg-red-50">Research Interests</h2>
+        <div className="text-center text-2xl pt-10 border-t">
+          <Title text1={"Research"} text2={"Interest"} />
+        </div>
         <img
           onClick={() => setIsEditingInterest(true)}
           src={assets.edit_icon}
@@ -86,9 +89,9 @@ const ResearchInterest = () => {
         {researchInterests.map((interest) => (
           <div
             key={interest}
-            className="flex items-center space-x-2 justify-between  p-2"
+            className="flex items-center space-x-2 justify-between p-2 "
           >
-            <div>
+            <div className=" border rounded p-2 w-full text-m">
               <span>{interest}</span>
             </div>
             <div>

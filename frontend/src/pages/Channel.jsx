@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ChannelCard from "../components/ChannelCard";
 import { useParams } from "react-router-dom";
+import Title from "../components/Titile";
 
 const Channel = () => {
   const [user, setUser] = useState(null);
@@ -32,7 +33,9 @@ const Channel = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Channels</h2>
+      <div className="text-center text-2xl pt-5 border-t">
+        <Title text1={"Ongoing"} text2={"Thesis"} />
+      </div>
       {channels.length > 0 ? (
         channels.map((channel) => (
           <ChannelCard key={channel._id} channel={channel} />

@@ -116,35 +116,35 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <div className="w-1/4 bg-white shadow-lg p-6">
+      <div className="lg:w-1/4 bg-white shadow-lg p-6 border-green-950 rounded-lg">
         <ResearchInterest />
         {user.role === "STUDENT" ? (
-          <div className="justify-between mt-4 mb-2">
+          <div className="mt-6">
             <ThesisIdea userId={user._id} />
             <button
               onClick={handlePostThesisIdea}
-              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
+              className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition"
             >
               Post Thesis Idea
             </button>
           </div>
         ) : user.role === "FACULTY" ? (
-          <div>
+          <div className="mt-6">
             <ThesisRequests userId={user._id} />
           </div>
         ) : null}
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow flex flex-col items-center justify-center p-8">
-        <div className="w-full max-w-3xl rounded-lg overflow-hidden shadow-lg bg-white">
-          {/* Profile Image and Role Badge */}
-          <div className="relative">
+      <div className="flex-grow p-6 ">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden ">
+          {/* Profile Section */}
+          <div className="relative flex justify-center items-center">
             <img
-              className="w-full h-64 object-cover rounded-t-lg"
-              src={user.image}
+              className="w-60 h-60 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 m-2 shadow-2xl"
+              src={user.image || "https://via.placeholder.com/150"}
               alt="Profile"
             />
             <div className="absolute top-4 right-4 bg-blue-600 text-white text-sm px-3 py-1 rounded-md shadow-md">
@@ -152,53 +152,75 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Profile Details */}
-          <div className="px-6 py-8">
-            <h1 className="font-bold text-4xl text-gray-800 mb-4 text-center">
-              {user.name}
+          {/* Details Section */}
+          <div className="p-6">
+            <h1 className="font-bold text-3xl text-gray-800 text-center mb-4">
+              {user.name || "Anonymous"}
             </h1>
-            <p className="text-gray-600 text-center text-lg mb-6 italic">
-              {user.department}
+            <p className="text-center text-gray-600 italic mb-2">
+              Department: {user.department || "Unknown"}
             </p>
+
+            {/* Email & Bio */}
             <div className="space-y-4">
-              <p className="text-gray-700 text-lg">
-                <span className="font-semibold mr-2">Email:</span>
-                {user.email}
-              </p>
-              <div className="text-gray-700 text-lg">
-                <span className="font-semibold mr-2">Bio:</span>
+              {/* Centered Email Section */}
+              <div className="flex flex-col items-center text-gray-700">
+                <p>
+                  <span className="font-semibold">Email:</span> {user.email}
+                </p>
+              </div>
+
+              {/* Bio Section */}
+              <div className="text-gray-700">
+                <span className="font-semibold">Bio:</span>
                 {isEditingBio ? (
-                  <div className="flex flex-col">
+                  <div className="mt-2">
                     <textarea
                       className="border rounded p-2 w-full text-sm"
                       value={newBio}
                       onChange={(e) => setNewBio(e.target.value)}
+                      rows={4}
                     />
-                    <button
-                      onClick={handleBioSubmit}
-                      className="mt-2 bg-green-600 text-white py-2 px-4 rounded shadow-md hover:bg-green-700 transition-colors"
-                    >
-                      Submit
-                    </button>
+                    <div className="flex justify-end space-x-4 mt-2">
+                      <button
+                        onClick={handleBioSubmit}
+                        className="bg-green-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setIsEditingBio(false)}
+                        className="bg-gray-400 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-500 transition"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 ) : (
-                  <>
-                    <span>{user.bio || "No bio available"}</span>
-                    <button
-                      onClick={handleBioEdit}
-                      className="ml-2 bg-blue-600 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700 transition-colors"
-                    >
-                      Edit
-                    </button>
-                  </>
+                  <div className="">
+                    {/* Bio Section */}
+                    <div className="border border-neutral-500 rounded p-2 flex-grow bg-white">
+                      <p>{user.bio || "No bio available"}</p>
+                    </div>
+
+                    {/* Edit Button */}
+                    <div className="flex justify-end mt-2">
+                      <button
+                        onClick={handleBioEdit}
+                        className="bg-blue-600 text-white py-1 px-3 rounded-lg shadow-md hover:bg-blue-700 transition "
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Image Upload */}
-          <div className="flex justify-center space-x-4 mt-6">
-            <label className="bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-colors cursor-pointer">
+          {/* Actions Section */}
+          <div className="p-6 border-t flex justify-center">
+            <label className="bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition cursor-pointer">
               Upload Image
               <input
                 type="file"
