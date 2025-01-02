@@ -9,63 +9,46 @@ const FAQ = () => {
           <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Question 1 */}
-            <details className="bg-white shadow-md rounded-lg p-6 group">
-              <summary className="font-semibold cursor-pointer text-lg flex justify-between items-center">
-                <span>How do I submit my thesis on this platform?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                You can submit your thesis by creating an account, logging in,
-                and navigating to the "Upload Thesis" section in your dashboard.
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <h3 className="font-bold text-base text-gray-700 mb-2">
+                How do I submit my thesis on this platform?
+              </h3>
+              <p className="text-sm text-gray-600">
+                You can submit your thesis by creating an account, logging in, and navigating to the "Upload Thesis" section in your dashboard.
               </p>
-            </details>
+            </div>
 
             {/* Question 2 */}
-            <details className="bg-white shadow-md rounded-lg p-6 group">
-              <summary className="font-semibold cursor-pointer text-lg flex justify-between items-center">
-                <span>Can I collaborate with others on a thesis?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                Yes, the platform offers collaboration features to work with
-                your peers or advisors seamlessly.
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <h3 className="font-bold text-base text-gray-700 mb-2">
+                Can I collaborate with others on a thesis?
+              </h3>
+              <p className="text-sm text-gray-600">
+                Yes, the platform offers collaboration features to work with your peers or advisors seamlessly.
               </p>
-            </details>
+            </div>
 
             {/* Question 3 */}
-            <details className="bg-white shadow-md rounded-lg p-6 group">
-              <summary className="font-semibold cursor-pointer text-lg flex justify-between items-center">
-                <span>Is my data secure on this platform?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                Absolutely! We use industry-standard encryption and secure
-                servers to protect your data and ensure privacy.
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <h3 className="font-bold text-base text-gray-700 mb-2">
+                Is my data secure on this platform?
+              </h3>
+              <p className="text-sm text-gray-600">
+                Absolutely! We use industry-standard encryption and secure servers to protect your data and ensure privacy.
               </p>
-            </details>
+            </div>
 
             {/* Question 4 */}
-            <details className="bg-white shadow-md rounded-lg p-6 group">
-              <summary className="font-semibold cursor-pointer text-lg flex justify-between items-center">
-                <span>Are there any fees for using this platform?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                The platform offers both free and premium plans. Premium plans
-                provide advanced features like extended storage and real-time
-                collaboration tools.
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <h3 className="font-bold text-base text-gray-700 mb-2">
+                Are there any fees for using this platform?
+              </h3>
+              <p className="text-sm text-gray-600">
+                The platform offers both free and premium plans. Premium plans provide advanced features like extended storage and real-time collaboration tools.
               </p>
-            </details>
+            </div>
           </div>
         </div>
       </section>
