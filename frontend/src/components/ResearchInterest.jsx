@@ -74,14 +74,17 @@ const ResearchInterest = () => {
 
   return (
     <>
-      <div className="flex items-center justify-around mb-2">
-        <div className="text-center text-2xl pt-10 border-t">
+      <div className="flex items-center justify-between mb-2">
+        {/* Title Section */}
+        <div className="text-center text-2xl border-t pt-4 flex-grow">
           <Title text1={"Research"} text2={"Interest"} />
         </div>
+
+        {/* Edit Icon */}
         <img
           onClick={() => setIsEditingInterest(true)}
           src={assets.edit_icon}
-          className="w-5 cursor-pointer"
+          className="w-5 cursor-pointer ml-4"
           alt="Edit"
         />
       </div>
