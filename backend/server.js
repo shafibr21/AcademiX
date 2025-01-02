@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoute.js";
 import facultyRouter from "./routes/facultyRoute.js";
 import studentRouter from "./routes/studentRoute.js";
 import channelRouter from "./routes/channelRoutes.js";
+import chatXRouter from "./routes/chatXRoutes.js";
 
 //App Config
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 // api endpoints
+app.use("/api/chatX", chatXRouter);
 app.use("/api/channels", channelRouter);
 app.use("/api/user", userRouter);
 app.use("/api/faculty", facultyRouter);
