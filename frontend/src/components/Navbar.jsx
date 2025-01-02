@@ -45,7 +45,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
               isActive
-                ? "border-black text-black"
+                ? "border-blue-500 text-blue-500"
                 : "border-gray-300 text-gray-700"
             }`
           }

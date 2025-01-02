@@ -45,7 +45,7 @@ const Hero = () => {
 
           {/* Feature 3 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">Collaborative Environment</h3>
+            <h3 className="text-2xl font-bold mb-4">Robotics and Automation</h3>
             <p>
               Foster collaboration between students and faculties to enhance the quality of
               research.
