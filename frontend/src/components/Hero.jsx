@@ -11,17 +11,17 @@ const Hero = () => {
         <div className="w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0">
           <div className="text-[#414141]">
             <div className="flex items-center gap-2">
-              <p className="font-bold text-sm md:text-base">
+              <p className="font-bold text-lg md:text-base">
                 Streamline Your Research
               </p>
-              <p className="w-8 md:w-11 h-[1px] bg-[#414141]"></p>
+              <p className="w-8 md:w-11 h-[2px] bg-[#414141]"></p>
             </div>
-            <div className="text-center text-5xl pt-5 border-t">
+            <div className="text-center text-8xl pt-5 border-t">
               <Title text1={"Academi_"} text2={"X"} />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex justify-end items-center gap-2">
               <p className="w-8 md:w-11 h-[2px] bg-[#414141]"></p>
-              <p className="font-medium text-sm md:text-base">
+              <p className="font-bold text-lg md:text-base">
                 Simplify Collaborate Succeed
               </p>
             </div>
