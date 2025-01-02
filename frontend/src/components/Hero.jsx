@@ -34,33 +34,77 @@ const Hero = () => {
       {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+          {/* Feature 4 */}
+          <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-2xl font-bold mb-4">Robotics and Automation</h3>
+            <a href="https://www.twi-global.com/technical-knowledge/faqs/what-is-industrial-automation-and-robotics" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.robo} // Replace with the actual image URL
+                alt=" Robotics and Automation"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
+          </div>
           {/* Feature 1 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">Create Profiles</h3>
-            <p>
-              Students and faculties can create profiles, showcasing their
-              interests and academic achievements.
-            </p>
+            <h3 className="text-2xl font-bold mb-4">Artificial Intelligence and Machine Learning</h3>
+            <a href="https://cloud.google.com/learn/artificial-intelligence-vs-machine-learning" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.ml} // Replace with the actual image URL
+                alt="Artificial Intelligence and Machine Learning"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
+          </div>
+          
+          {/* Feature 3 */}
+          <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-2xl font-bold mb-4">
+            Augmented and Virtual Reality
+            </h3>
+            <a href="https://www.splunk.com/en_us/blog/learn/ar-vr.html" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.download} // Replace with the actual image URL
+                alt="Augmented and Virtual Reality"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
           </div>
 
           {/* Feature 2 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">Thesis Requests</h3>
-            <p>
-              Students can submit thesis requests, and faculties have the
-              authority to approve or reject them.
-            </p>
+            <h3 className="text-2xl font-bold mb-4">Blockchain and Cryptocurrencies</h3>
+            <a href="https://www.coursera.org/articles/blockchain-cryptocurrency" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.block} // Replace with the actual image URL
+                alt="Blockchain and Cryptocurrencies"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
           </div>
 
-          {/* Feature 3 */}
+          {/* Feature 5 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              Collaborative Environment
-            </h3>
-            <p>
-              Foster collaboration between students and faculties to enhance the
-              quality of research.
-            </p>
+            <h3 className="text-2xl font-bold mb-4">Biotechnology and Bioengineering</h3>
+            <a href="https://analyticalsciencejournals.onlinelibrary.wiley.com/journal/10970290" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.bio} // Replace with the actual image URL
+                alt="Biotechnology and Bioengineering"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
+          </div>
+          {/* Feature 6 */}
+          <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-2xl font-bold mb-4">Neuroscience and Cognitive Studies</h3>
+            <a href="https://www.remedypublications.com/journal-of-neuroscience-cognitive-studies-home.php" target="_blank" rel="noopener noreferrer">
+              <img
+                src={assets.neuro} // Replace with the actual image URL
+                alt="Neuroscience and Cognitive Studies"
+                className="w-full mt-4 rounded-lg"
+              />
+            </a>
           </div>
         </div>
       </section>

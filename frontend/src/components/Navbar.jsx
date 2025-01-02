@@ -45,7 +45,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
               isActive
-                ? "border-blue-500 text-blue-500"
+                ? "border-black text-black"
                 : "border-gray-300 text-gray-700"
             }`
           }
@@ -57,7 +57,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
               isActive
-                ? "border-blue-500 text-blue-500"
+                ? "border-black text-black"
                 : "border-gray-300 text-gray-700"
             }`
           }
@@ -69,7 +69,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
               isActive
-                ? "border-blue-500 text-blue-500"
+                ? "border-black text-black"
                 : "border-gray-300 text-gray-700"
             }`
           }
@@ -81,7 +81,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
               isActive
-                ? "border-blue-500 text-blue-500"
+                ? "border-black text-black"
                 : "border-gray-300 text-gray-700"
             }`
           }
