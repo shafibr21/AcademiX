@@ -6,7 +6,7 @@ const ProjectCard = ({ idea }) => {
   return (
     <Link
       to={`/projects/${idea._id}`}
-      className="border rounded-lg p-4 shadow-md hover:bg-gray-100 transition-colors"
+      className="block border rounded-lg shadow-md hover:bg-gray-100 transition-colors"
     >
       <p
         className={`${
@@ -38,6 +38,7 @@ const ProjectCard = ({ idea }) => {
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:underline"
               >
+               
                 {link}
               </a>
             </div>
