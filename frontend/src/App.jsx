@@ -18,6 +18,7 @@ import ThesisIdea from "./pages/ThesisIdea";
 import ThesisReview from "./pages/ThesisReview";
 import Channel from "./pages/Channel";
 import ChannelDetails from "./components/ChannelDetails";
+import Footer from "./components/Footer";
 
 const App = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/channels/" element={<Channel />} />
         <Route path="/channels/:channelId" element={<ChannelDetails />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

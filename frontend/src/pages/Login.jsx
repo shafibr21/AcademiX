@@ -80,13 +80,13 @@ const LoginForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+          className="w-full py-2 px-4 bg-black text-white rounded hover:bg-white hover:text-black transition"
         >
           Login
         </button>
         <p className="text-sm text-center text-gray-600 mt-4">
           Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
+          <a href="/signup" className="text-black-500 hover:underline">
             Sign up
           </a>
         </p>

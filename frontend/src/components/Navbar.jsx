@@ -111,7 +111,7 @@ const Navbar = () => {
               alt="Profile"
             />
             <div
-              className={`absolute dropdown-menu right-0 pt-4 z-10 ${
+              className={`absolute dropdown-menu right-0 pt-4 z-50 ${
                 dropdown ? "block" : "hidden"
               }`}
             >
@@ -143,7 +143,7 @@ const Navbar = () => {
         ) : (
           <Link
             to="/login"
-            className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            className="py-2 px-4 bg-black text-white rounded hover:bg-white hover:text-black transition"
           >
             Sign In
           </Link>

@@ -5,6 +5,7 @@ import profile_icon from "./profile_icon.png";
 import search_icon from "./search_icon.png";
 import edit_icon from "./edit_icon.png";
 import contribution_icon from "./contribution_icon.png";
+import portese from "./portese.jpg";
 
 export const assets = {
   logo,
@@ -14,4 +15,5 @@ export const assets = {
   bin_icon,
   edit_icon,
   contribution_icon,
+  portese,
 };

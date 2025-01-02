@@ -20,7 +20,7 @@ const Home = () => {
     <div>
       <Hero />
 
-      <YoutubeCard />
+
 
       <FAQ />
 
