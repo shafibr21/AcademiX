@@ -1,84 +1,45 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ChannelCard from "../components/ChannelCard";
+import { useParams } from "react-router-dom";
 
 const Channel = () => {
-  const { channelId } = useParams();
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [channels, setChannels] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const fetchMessages = async () => {
+    const fetchChannels = async () => {
       try {
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
-
         const response = await axios.get(
-          `${apiDomain}/api/channels/${channelId}/messages`,
+          `${apiDomain}/api/channels/getChannel`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             },
           }
         );
-
-        setMessages(response.data.messages);
+        console.log(response.data.channels);
+        setChannels(response.data.channels);
       } catch (error) {
-        console.error("Error fetching messages:", error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching channels:", error);
       }
     };
 
-    fetchMessages();
-  }, [channelId]);
-
-  const sendMessage = async () => {
-    try {
-      const apiDomain = import.meta.env.VITE_API_DOMAIN;
-
-      const response = await axios.post(
-        `${apiDomain}/api/channels/${channelId}/messages`,
-        { senderId: localStorage.getItem("userId"), content: newMessage },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-
-      setMessages([...messages, response.data.message]);
-      setNewMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
-
-  if (loading) return <div>Loading messages...</div>;
+    fetchChannels();
+  }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Communication Channel</h1>
-      <div className="mb-6">
-        {messages.map((msg) => (
-          <div key={msg._id} className="mb-2">
-            <strong>{msg.sender.name}:</strong> {msg.content}
-          </div>
-        ))}
-      </div>
-      <textarea
-        className="w-full p-2 border border-gray-300 rounded mb-2"
-        rows="3"
-        placeholder="Type your message..."
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      ></textarea>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded"
-        onClick={sendMessage}
-      >
-        Send
-      </button>
+    <div>
+      <h2 className="text-xl font-bold mb-4">Channels</h2>
+      {channels.length > 0 ? (
+        channels.map((channel) => (
+          <ChannelCard key={channel._id} channel={channel} />
+        ))
+      ) : (
+        <p className="text-gray-500">No channels available.</p>
+      )}
     </div>
   );
 };

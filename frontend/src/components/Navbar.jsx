@@ -122,9 +122,9 @@ const Navbar = () => {
                   desc="Profile"
                 />
                 <SubLink
-                  link="/thesis"
+                  link="/channels/"
                   handleClick={handlesubLink}
-                  desc="Thesis"
+                  desc="Channel"
                 />
                 <SubLink
                   link="/projects"

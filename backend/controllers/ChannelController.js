@@ -1,4 +1,5 @@
-import { Channel } from "../model/models.js";
+import { response } from "express";
+import { Channel, Faculty, User } from "../model/models.js";
 
 const createChannel = async (req, res) => {
   try {
@@ -54,9 +55,32 @@ const fetchChannel = async (req, res) => {
   }
 };
 
+const getChannelById = async (req, res) => {
+  try {
+    const { channelId } = req.params;
+
+    // Fetch the channel by ID
+    const channel = await Channel.findById(channelId)
+      .populate("thesisId", "title abstract authors researchArea") // Populate thesis details
+      .populate("facultyId", "userId") // Populate faculty details
+      .populate("studentId", "name email"); // Populate student details
+
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    res.status(200).json({ success: true, channel });
+  } catch (error) {
+    console.error("Error fetching channel:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 const sendMessage = async (req, res) => {
   try {
-    const { channelId, senderId, content } = req.body;
+    const { channelId } = req.params;
+    const { content } = req.body;
+    const senderId = req.decoded.id;
 
     const channel = await Channel.findById(channelId);
     if (!channel) {
@@ -70,8 +94,12 @@ const sendMessage = async (req, res) => {
 
     channel.messages.push(newMessage);
     await channel.save();
-
-    res.status(201).json({ success: true, message: newMessage });
+    const sender = await User.findById(senderId).select("name email");
+    const responseMessage = {
+      sender: sender,
+      content: newMessage.content,
+    };
+    res.status(201).json({ success: true, message: responseMessage });
   } catch (error) {
     console.error("Error sending message:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -96,4 +124,65 @@ const fetchMessages = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-export { createChannel, sendMessage, fetchMessages, fetchChannel };
+
+const getChannels = async (req, res) => {
+  try {
+    const userId = req.decoded.id;
+
+    // Fetch the user to determine their role
+    const user = await User.findById(userId).select("role");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    let query = {};
+
+    // Build query based on the user's role
+    if (user.role === "STUDENT") {
+      const student = await User.findById(userId).select("student");
+      if (!student) {
+        return res.status(404).json({ message: "Student ID not found" });
+      }
+      query.studentId = userId;
+    } else if (user.role === "FACULTY") {
+      const faculty = await Faculty.findOne({ userId }).select("_id");
+      if (!faculty) {
+        return res.status(404).json({ message: "Faculty ID not found" });
+      }
+      query.facultyId = faculty._id;
+    } else {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized access: Invalid user role" });
+    }
+
+    // Fetch channels based on the query
+    const channels = await Channel.find(query)
+      .populate("thesisId", "title abstract authors researchArea") // Populate thesis details
+      .populate("facultyId", "userId") // Populate faculty details
+      .populate("studentId", "name email"); // Populate student details
+
+    if (channels.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No channels found for the user" });
+    }
+
+    res.status(200).json({ success: true, channels });
+  } catch (error) {
+    console.error("Error fetching channels:", error);
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export {
+  createChannel,
+  sendMessage,
+  fetchMessages,
+  fetchChannel,
+  getChannelById,
+  getChannels,
+};

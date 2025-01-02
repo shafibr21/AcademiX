@@ -6,6 +6,7 @@ import {
   getFacultyById,
   getThesisById,
   getThesisRequestsById,
+  removeThesisRequest,
   updateThesisStatus,
 } from "../controllers/facultyController.js";
 import { createChannel } from "../controllers/ChannelController.js";
@@ -19,5 +20,6 @@ facultyRouter.get("/thesis-review/:id", checkAuth, getThesisById);
 facultyRouter.patch("/thesis/:id", checkAuth, updateThesisStatus);
 facultyRouter.post("/thesis/:id/review", checkAuth, addThesisReview);
 facultyRouter.patch("thesis-approved/:id", checkAuth, createChannel);
+facultyRouter.patch("/removeThesisRequest/:id", checkAuth, removeThesisRequest);
 
 export default facultyRouter;

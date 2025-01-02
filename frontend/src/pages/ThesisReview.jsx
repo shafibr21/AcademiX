@@ -50,6 +50,17 @@ const ThesisReview = () => {
         }
       );
 
+      // Remove the thesis from faculty's thesisRequests array
+      await axios.patch(
+        `${apiDomain}/api/faculty/removeThesisRequest/${thesisId}`,
+        { thesisId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
       alert("Thesis rejected successfully!");
       navigate("/profile"); // Redirect to profile page
     } catch (error) {
@@ -80,6 +91,17 @@ const ThesisReview = () => {
           studentId: thesis.studentId._id,
           facultyId: thesis.facultyId._id,
         },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      // Remove the thesis from faculty's thesisRequests array
+      await axios.patch(
+        `${apiDomain}/api/faculty/removeThesisRequest/${thesisId}`,
+        { thesisId },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,

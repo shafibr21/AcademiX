@@ -43,25 +43,7 @@ const ProfilePage = () => {
       }
     };
 
-    const fetchChannels = async () => {
-      try {
-        const apiDomain = import.meta.env.VITE_API_DOMAIN;
-        const response = await axios.get(
-          `${apiDomain}/api/channels/getChannel/`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
-        );
-        setChannels(response.data.channels); // Set fetched channels
-      } catch (error) {
-        console.error("Error fetching channels:", error);
-      }
-    };
-
     fetchUserData();
-    fetchChannels();
   }, []);
 
   const handleBioEdit = () => {
@@ -153,25 +135,6 @@ const ProfilePage = () => {
             <ThesisRequests userId={user._id} />
           </div>
         ) : null}
-        {/* Channels Section */}
-        <div>
-          <h2 className="font-bold text-lg mb-2">Your Channels</h2>
-          {channels.length === 0 ? (
-            <p>No channels available.</p>
-          ) : (
-            <ul className="space-y-2">
-              {channels.map((channel) => (
-                <li
-                  key={channel._id}
-                  className="p-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
-                  onClick={() => handleNavigateToChannel(channel._id)}
-                >
-                  {channel.thesisId?.title || "Untitled Thesis"}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
       </div>
 
       {/* Main Content */}

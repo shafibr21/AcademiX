@@ -195,6 +195,29 @@ const addThesisReview = async (req, res) => {
   }
 };
 
+const removeThesisRequest = async (req, res) => {
+  try {
+    const { thesisId } = req.body;
+
+    // Remove thesisId from the faculty's thesisRequests array
+    const updatedFaculty = await Faculty.updateOne(
+      { thesisRequests: thesisId },
+      { $pull: { thesisRequests: thesisId } }
+    );
+
+    if (updatedFaculty.modifiedCount === 0) {
+      return res.status(404).json({ message: "Thesis request not found." });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "Thesis request removed successfully." });
+  } catch (error) {
+    console.error("Error removing thesis request:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export {
   getFaculty,
   getFacultyById,
@@ -202,4 +225,5 @@ export {
   getThesisById,
   updateThesisStatus,
   addThesisReview,
+  removeThesisRequest,
 };
