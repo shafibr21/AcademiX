@@ -27,7 +27,7 @@ const Hero = () => {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Feature 1 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">Artificial Intelligence and Machine Learning</h3>
+            <h3 className="text-2xl font-bold mb-4">Create Profiles</h3>
             <p>
               Students and faculties can create profiles, showcasing their interests and academic
               achievements.
@@ -36,7 +36,7 @@ const Hero = () => {
 
           {/* Feature 2 */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-center">
-            <h3 className="text-2xl font-bold mb-4">Biotechnology and Bioengineering</h3>
+            <h3 className="text-2xl font-bold mb-4">Thesis Requests</h3>
             <p>
               Students can submit thesis requests, and faculties have the authority to approve or
               reject them.
