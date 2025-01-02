@@ -125,7 +125,7 @@ const ProfilePage = () => {
             <ThesisIdea userId={user._id} />
             <button
               onClick={handlePostThesisIdea}
-              className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition"
+              className="mt-4 w-full py-2 px-4 bg-black text-white rounded hover:bg-white hover:text-black transition"
             >
               Post Thesis Idea
             </button>
@@ -144,10 +144,10 @@ const ProfilePage = () => {
           <div className="relative flex justify-center items-center">
             <img
               className="w-60 h-60 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 m-2 shadow-2xl"
-              src={user.image || "https://via.placeholder.com/150"}
+              src={user.image}
               alt="Profile"
             />
-            <div className="absolute top-4 right-4 bg-blue-600 text-white text-sm px-3 py-1 rounded-md shadow-md">
+            <div className="absolute top-4 right-4 bg-black text-white text-sm px-3 py-1 rounded-md shadow-2xl">
               {user.role}
             </div>
           </div>
@@ -207,7 +207,7 @@ const ProfilePage = () => {
                     <div className="flex justify-end mt-2">
                       <button
                         onClick={handleBioEdit}
-                        className="bg-blue-600 text-white py-1 px-3 rounded-lg shadow-md hover:bg-blue-700 transition "
+                        className="py-2 px-4 bg-black text-white rounded hover:bg-white hover:text-black hover:border-slate-950 transition "
                       >
                         Edit
                       </button>
@@ -220,7 +220,7 @@ const ProfilePage = () => {
 
           {/* Actions Section */}
           <div className="p-6 border-t flex justify-center">
-            <label className="bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition cursor-pointer">
+            <label className="py-2 px-4 bg-black text-white rounded hover:bg-white hover:text-black hover:border-slate-950 transition cursor-pointer">
               Upload Image
               <input
                 type="file"
