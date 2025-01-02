@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Title from "../components/Titile";
 
 const ThesisIdea = ({ userId }) => {
   const [thesisIdeas, setThesisIdeas] = useState([]);
@@ -46,10 +47,10 @@ const ThesisIdea = ({ userId }) => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        Thesis Ideas
-      </h2>
+    <div className="p-6 bg-gray-100 ">
+      <div className="text-center text-2xl pt-10 border-t">
+        <Title text1={"Thesis"} text2={"Idea"} />
+      </div>
       <div className="space-y-4">
         {thesisIdeas.map((idea) => (
           <div

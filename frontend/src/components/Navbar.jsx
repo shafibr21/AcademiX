@@ -126,11 +126,6 @@ const Navbar = () => {
                   handleClick={handlesubLink}
                   desc="Channel"
                 />
-                <SubLink
-                  link="/projects"
-                  handleClick={handlesubLink}
-                  desc="Projects"
-                />
                 <p
                   onClick={handleLogout}
                   className="cursor-pointer hover:text-black"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Title from "./Titile";
 
 const ChannelDetails = () => {
   const { channelId } = useParams();
@@ -60,7 +61,9 @@ const ChannelDetails = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Communication Channel</h1>
+      <div className="text-center text-2xl pt-5 border-t">
+        <Title text1={"Communication"} text2={"Channel"} />
+      </div>
       <div className="mb-6 overflow-y-auto max-h-96">
         {messages.length > 0 ? (
           messages.map((msg) => (

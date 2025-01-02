@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProjectCard from "../components/ProjectCard";
 import { Link } from "react-router-dom";
+import Title from "../components/Titile";
 
 const Projects = () => {
   const [thesisIdeas, setThesisIdeas] = useState([]);
@@ -40,10 +41,16 @@ const Projects = () => {
     return <div>{error}</div>;
   }
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {thesisIdeas.map((idea) => (
-        <ProjectCard key={idea._id} idea={idea} />
-      ))}
+    <div>
+      <div className="text-center text-2xl pt-5 border-t">
+        <Title text1={"All"} text2={"Projects"} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-8">
+        {thesisIdeas.map((idea) => (
+          <ProjectCard key={idea._id} idea={idea} />
+        ))}
+      </div>
+      );
     </div>
   );
 };
