@@ -88,6 +88,18 @@ const Navbar = () => {
         >
           <p>Projects</p>
         </NavLink>
+        <NavLink
+          to="/chatX"
+          className={({ isActive }) =>
+            `flex flex-col items-center gap-1 border-2 p-2 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "border-black text-black"
+                : "border-gray-300 text-gray-700"
+            }`
+          }
+        >
+          <p>Chat_AI</p>
+        </NavLink>
       </ul>
 
       {/* Right side div */}

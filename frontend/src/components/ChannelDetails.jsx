@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Title from "./Titile";
 
 const ChannelDetails = () => {
   const { channelId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const apiDomain = import.meta.env.VITE_API_DOMAIN;
+
         const response = await axios.get(
           `${apiDomain}/api/channels/${channelId}/messages`,
           {
@@ -22,9 +22,10 @@ const ChannelDetails = () => {
             },
           }
         );
+
         setMessages(response.data.messages);
-      } catch (err) {
-        setError("Failed to load messages. Please try again later.");
+      } catch (error) {
+        console.error("Error fetching messages:", error);
       } finally {
         setLoading(false);
       }
@@ -34,47 +35,63 @@ const ChannelDetails = () => {
   }, [channelId]);
 
   const sendMessage = async () => {
-    if (!newMessage.trim()) return;
-
     try {
       const apiDomain = import.meta.env.VITE_API_DOMAIN;
+
+      // Prepare FormData for message and document upload
+      const formData = new FormData();
+      formData.append("content", newMessage);
+      if (file) {
+        formData.append("document", file); // Append selected file
+      }
+
       const response = await axios.post(
         `${apiDomain}/api/channels/${channelId}/send-messages`,
-        { content: newMessage },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      setMessages((prevMessages) => [...prevMessages, response.data.message]);
-      setNewMessage("");
-    } catch (err) {
-      console.error("Error sending message:", err);
-      setError("Failed to send message. Please try again.");
+      // Add the new message to the messages state
+      setMessages([...messages, response.data.message]);
+      setNewMessage(""); // Clear the message input
+      setFile(null); // Clear the file input
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
   };
 
   if (loading) return <div>Loading messages...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <div className="text-center text-2xl pt-5 border-t">
-        <Title text1={"Communication"} text2={"Channel"} />
-      </div>
-      <div className="mb-6 overflow-y-auto max-h-96">
+      <h1 className="text-2xl font-bold mb-4">Communication Channel</h1>
+      <div className="mb-6">
         {messages.length > 0 ? (
           messages.map((msg) => (
-            <div key={msg._id} className="mb-2 border-b pb-2">
-              <strong>{msg.sender?.name || "Unknown"}:</strong> {msg.content}
+            <div key={msg._id} className="mb-4 border-b pb-2">
+              <strong>{msg.sender.name}:</strong>{" "}
+              {msg.content && <p>{msg.content}</p>}
+              {msg.document && (
+                <p>
+                  <a
+                    href={msg.document}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black underline"
+                  >
+                    File
+                  </a>
+                </p>
+              )}
             </div>
           ))
         ) : (
-          <p className="text-gray-500">
-            No messages yet. Start the conversation!
-          </p>
+          <p>No messages yet.</p>
         )}
       </div>
       <textarea
@@ -84,9 +101,15 @@ const ChannelDetails = () => {
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
       ></textarea>
+      <input
+        type="file"
+        className="mb-4"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
       <button
         className="px-4 py-2 bg-blue-500 text-white rounded"
         onClick={sendMessage}
+        disabled={!newMessage && !file} // Disable button if no message or file
       >
         Send
       </button>

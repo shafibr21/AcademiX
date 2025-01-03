@@ -127,6 +127,7 @@ const ThesisIdeaSchema = new Schema({
 const MessageSchema = new mongoose.Schema({
   sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   content: { type: String, required: true },
+  document: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
 //  Channel Schema

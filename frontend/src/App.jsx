@@ -19,6 +19,7 @@ import ThesisReview from "./pages/ThesisReview";
 import Channel from "./pages/Channel";
 import ChannelDetails from "./components/ChannelDetails";
 import Footer from "./components/Footer";
+import ChatAI from "./pages/ChatAI";
 
 const App = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/thesis-review/:thesisId" element={<ThesisReview />} />
         <Route path="/channels/" element={<Channel />} />
         <Route path="/channels/:channelId" element={<ChannelDetails />} />
+        <Route path="/chatX" element={<ChatAI />} />
       </Routes>
       <Footer />
     </div>

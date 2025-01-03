@@ -1,4 +1,5 @@
 import { response } from "express";
+import { v2 as cloudinary } from "cloudinary";
 import { Channel, Faculty, User } from "../model/models.js";
 
 const createChannel = async (req, res) => {
@@ -82,29 +83,51 @@ const sendMessage = async (req, res) => {
     const { content } = req.body;
     const senderId = req.decoded.id;
 
+    // Check if the channel exists
     const channel = await Channel.findById(channelId);
     if (!channel) {
       return res.status(404).json({ message: "Channel not found." });
     }
 
+    let documentUrl = null;
+
+    // If a document is uploaded, upload it to Cloudinary
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "documents", // Cloudinary folder name
+        resource_type: "auto", // Automatically determine file type
+      });
+      documentUrl = result.secure_url;
+    }
+
+    // Create new message object
     const newMessage = {
       sender: senderId,
       content,
+      document: documentUrl,
     };
 
+    // Add message to the channel
     channel.messages.push(newMessage);
     await channel.save();
+
+    // Fetch sender details
     const sender = await User.findById(senderId).select("name email");
+
+    // Construct response message
     const responseMessage = {
       sender: sender,
       content: newMessage.content,
+      document: newMessage.document,
     };
+
     res.status(201).json({ success: true, message: responseMessage });
   } catch (error) {
     console.error("Error sending message:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 const fetchMessages = async (req, res) => {
   try {
