@@ -41,7 +41,7 @@ const Projects = () => {
     return <div>{error}</div>;
   }
   return (
-    <div>
+    <div className="min-h-screen">
       <div className="text-center text-2xl pt-5 border-t">
         <Title text1={"All"} text2={"Projects"} />
       </div>

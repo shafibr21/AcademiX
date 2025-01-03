@@ -32,13 +32,15 @@ const Channel = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen ">
       <div className="text-center text-2xl pt-5 border-t">
         <Title text1={"Ongoing"} text2={"Thesis"} />
       </div>
       {channels.length > 0 ? (
         channels.map((channel) => (
-          <ChannelCard key={channel._id} channel={channel} />
+          <div className="flex justify-center " key={channel._id}>
+            <ChannelCard key={channel._id} channel={channel} />
+          </div>
         ))
       ) : (
         <p className="text-gray-500">No channels available.</p>

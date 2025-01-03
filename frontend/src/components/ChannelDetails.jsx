@@ -78,7 +78,7 @@ const ChannelDetails = () => {
   if (loading) return <div>Loading messages...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg border">
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg border min-h-screen">
       <div className="text-center text-2xl pt-5 border-t">
         <Titile text1={"Communication"} text2={"Channel"} />
       </div>

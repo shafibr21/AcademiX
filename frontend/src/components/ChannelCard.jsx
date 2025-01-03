@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Book, User, Calendar, ArrowRight } from "lucide-react";
 
 const ChannelCard = ({ channel }) => {
   const navigate = useNavigate();
@@ -7,29 +8,40 @@ const ChannelCard = ({ channel }) => {
 
   return (
     <div
-      className="border border-gray-300 rounded-lg p-4 mb-4 shadow-md bg-white cursor-pointer hover:shadow-lg transition-shadow"
-      onClick={() => navigate(`/channels/${_id}`)} // Navigate to ChannelDetails
+      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer w-[800px] m-5 "
+      onClick={() => navigate(`/channels/${_id}`)}
     >
-      {/* Thesis Information */}
-      <h3 className="text-lg font-bold mb-2">{thesisId?.title}</h3>
-      <p className="text-gray-600 mb-2">{thesisId?.abstract}</p>
-      <p className="text-sm text-gray-500">
-        <strong>Authors:</strong> {thesisId?.authors.join(", ")}
-      </p>
-
-      {/* Student Information */}
-      <div className="mt-4">
-        <p className="text-sm text-gray-700">
-          <strong>Student Name:</strong> {studentId?.name}
-        </p>
+      <div className="p-6">
+        <div className="flex items-center mb-4">
+          <Book className="h-6 w-6 text-indigo-500 mr-2" />
+          <h3 className="text-xl font-bold text-gray-900 truncate">
+            {thesisId.title}
+          </h3>
+        </div>
+        <p className="text-gray-600 mb-4 line-clamp-2">{thesisId.abstract}</p>
+        <div className="flex flex-wrap items-center text-sm text-gray-500 mb-4">
+          <User className="h-4 w-4 mr-1" />
+          <span className="mr-2 font-medium">Authors:</span>
+          <span>{thesisId.authors.join(", ")}</span>
+        </div>
+        <div className="flex items-center text-sm text-gray-500 mb-4">
+          <User className="h-4 w-4 mr-1" />
+          <span className="mr-2 font-medium">Student:</span>
+          <span>{studentId.name}</span>
+        </div>
+        <div className="flex items-center text-sm text-gray-500">
+          <Calendar className="h-4 w-4 mr-1" />
+          <span className="mr-2 font-medium">Created:</span>
+          <span>{new Date(createdAt).toLocaleString()}</span>
+        </div>
       </div>
-
-      {/* Metadata */}
-      <div className="mt-4">
-        <p className="text-sm text-gray-500">
-          <strong>Channel Created:</strong>{" "}
-          {new Date(createdAt).toLocaleString()}
-        </p>
+      <div className="bg-gray-50 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+            View Channel Details
+          </span>
+          <ArrowRight className="h-5 w-5 text-indigo-500" />
+        </div>
       </div>
     </div>
   );
