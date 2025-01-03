@@ -11,9 +11,8 @@ function ChatAI() {
   useEffect(() => {
     const resetConversation = async () => {
       try {
-        const apiDomain = import.meta.env.VITE_API_DOMAIN;
-        const response = await axios.post(`${apiDomain}/api/chatX/reset`);
-        setMessages(response.data.messages || []);
+        await axios.post("http://localhost:4000/api/chatX/reset");
+        setMessages([]);
       } catch (error) {
         console.error("Error resetting conversation history:", error.message);
       }
@@ -36,11 +35,13 @@ function ChatAI() {
     setLoading(true);
 
     try {
-      const apiDomain = import.meta.env.VITE_API_DOMAIN;
-      const response = await axios.post(`${apiDomain}/api/chatX/chat`, {
-        model: "llama3",
-        messages: [...messages, userMessage],
-      });
+      const response = await axios.post(
+        "http://localhost:4000/api/chatX/chat",
+        {
+          model: "chatX",
+          messages: [...messages, userMessage],
+        }
+      );
       const assistantMessage =
         response.data.choices[0]?.message?.content || "No response from server";
       displayMessage("LLama", assistantMessage);
@@ -87,7 +88,7 @@ function ChatAI() {
           ))}
           {loading && (
             <div className="flex justify-start mb-4">
-              <div className="flex-shrink-0 bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center mr-3">
+              <div className="flex-shrink-0 bg-black text-white rounded-full h-10 w-10 flex items-center justify-center mr-3">
                 L
               </div>
               <div className="p-3 rounded-lg shadow bg-white text-gray-700 max-w-xs">
@@ -114,10 +115,12 @@ function ChatAI() {
             onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
-            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-black text-white p-2 rounded-lg hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={sendMessage}
             disabled={loading}
-          ></button>
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

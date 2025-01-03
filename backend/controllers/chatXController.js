@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Define conversationHistory as a global variable
 let conversationHistory = [];
 
 const summarizeAbstract = async (req, res) => {
@@ -32,8 +31,6 @@ const clearChatX = async (req, res) => {
 const startConvo = async (req, res) => {
   const { model, messages, stream, keep_alive } = req.body;
 
-  let conversationHistory = [];
-
   if (!model || !messages || !Array.isArray(messages)) {
     return res
       .status(400)
@@ -49,7 +46,7 @@ const startConvo = async (req, res) => {
 
   try {
     const response = await axios.post("http://localhost:11434/api/generate", {
-      model: "WheelZOnRent",
+      model: "chatX",
       prompt: userMessage,
       stream: stream || false,
       keep_alive: keep_alive || "5m",
